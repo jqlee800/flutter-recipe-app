@@ -51,9 +51,14 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildRecipeTile() {
     return ListTile(
       tileColor: Colors.grey.shade100,
-      leading: const Icon(
-        Icons.list,
-        size: 60,
+      leading: Container(
+        padding: const EdgeInsets.all(4),
+        color: Colors.blue,
+        width: 60,
+        height: 60,
+        child: const Icon(
+          Icons.image,
+        ),
       ),
       trailing: const Text(
         "Main Courses",
