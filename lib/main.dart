@@ -9,8 +9,11 @@ import 'package:xml/xml.dart' as xml;
 // Models
 import 'package:flutter_recipe_app/models/recipe_type.dart';
 
+// Screens
+import 'package:flutter_recipe_app/screens/home.dart';
+
 void main() async {
-  runApp(const MyApp());
+  runApp(const RecipeApp());
 
   List<RecipeType> types = await _loadRecipeTypes();
 
@@ -37,17 +40,20 @@ Future<List<RecipeType>> _loadRecipeTypes() async {
   // Convert xml content into a model
   for (final type in types) {
     final name = type.findElements('name').first.text;
+    final code = type.findElements('code').first.text;
     final description = type.findElements('description').first.text;
 
-    RecipeType typeModel = RecipeType(name, description);
+    RecipeTypeCode codeEnum = codeStringToEnum(code);
+
+    RecipeType typeModel = RecipeType(name, codeEnum, description);
     recipeTypes.add(typeModel);
   }
 
   return recipeTypes;
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class RecipeApp extends StatelessWidget {
+  const RecipeApp({super.key});
 
   // This widget is the root of your application.
   @override
@@ -73,7 +79,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const HomeScreen(),
     );
   }
 }
