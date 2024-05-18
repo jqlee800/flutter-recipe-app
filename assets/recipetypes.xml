@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<recipes>
+  <recipeType>
+    <name>Appetizers</name>
+    <description>Small dishes served before the main course to stimulate the appetite.</description>
+  </recipeType>
+  <recipeType>
+    <name>Main Courses</name>
+    <description>Hearty dishes that form the main part of a meal.</description>
+  </recipeType>
+  <recipeType>
+    <name>Desserts</name>
+    <description>Sweet dishes usually served at the end of a meal.</description>
+  </recipeType>
+  <recipeType>
+    <name>Salads</name>
+    <description>Mixed dishes typically containing vegetables, often served with a dressing.</description>
+  </recipeType>
+  <recipeType>
+    <name>Beverages</name>
+    <description>Drinks, both alcoholic and non-alcoholic, to accompany meals.</description>
+  </recipeType>
+</recipes>
