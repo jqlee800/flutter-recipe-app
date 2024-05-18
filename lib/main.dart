@@ -1,7 +1,49 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
-void main() {
+// External libraries
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:xml/xml.dart' as xml;
+
+// Models
+import 'package:flutter_recipe_app/models/recipe_type.dart';
+
+void main() async {
   runApp(const MyApp());
+
+  List<RecipeType> types = await _loadRecipeTypes();
+
+  // Save into SP for easy retrieval
+  final SharedPreferences spInstance = await SharedPreferences.getInstance();
+  String recipeTypeJson = jsonEncode(types);
+  spInstance.setString('recipeTypes', recipeTypeJson);
+
+  print(spInstance.getString('recipeTypes'));
+}
+
+// Function to load and parse recipe types from recipetypes.xml
+Future<List<RecipeType>> _loadRecipeTypes() async {
+  // Read xml file from assets folder
+  String recipeTypesXml = await rootBundle.loadString('assets/recipetypes.xml');
+
+  final document = xml.XmlDocument.parse(recipeTypesXml);
+
+  final recipesNode = document.findElements('recipes').first;
+  final types = recipesNode.findElements('recipeType');
+
+  List<RecipeType> recipeTypes = [];
+
+  // Convert xml content into a model
+  for (final type in types) {
+    final name = type.findElements('name').first.text;
+    final description = type.findElements('description').first.text;
+
+    RecipeType typeModel = RecipeType(name, description);
+    recipeTypes.add(typeModel);
+  }
+
+  return recipeTypes;
 }
 
 class MyApp extends StatelessWidget {
@@ -111,7 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
-            ),
+            )
           ],
         ),
       ),
