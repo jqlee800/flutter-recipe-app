@@ -36,16 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
             itemBuilder: (BuildContext context, int index) {
               return Padding(
                 padding: const EdgeInsets.only(bottom: 4),
-                child: ListTile(
-                  tileColor: Colors.grey.shade100,
-                  leading: const Icon(Icons.list),
-                  trailing: const Text(
-                    "Main Courses",
-                    style: TextStyle(color: Colors.green, fontSize: 15),
-                  ),
-                  title: Text("Signature Fish and Chips"),
-                  subtitle: Text("Fried fish & fries"),
-                ),
+                child: _buildRecipeTile(),
               );
             }),
       ),
@@ -54,6 +45,22 @@ class _HomeScreenState extends State<HomeScreen> {
         tooltip: 'Add Recipe',
         child: const Icon(Icons.add),
       ),
+    );
+  }
+
+  Widget _buildRecipeTile() {
+    return ListTile(
+      tileColor: Colors.grey.shade100,
+      leading: const Icon(
+        Icons.list,
+        size: 60,
+      ),
+      trailing: const Text(
+        "Main Courses",
+        style: TextStyle(color: Colors.green, fontSize: 15),
+      ),
+      title: Text("Signature Fish and Chips"),
+      subtitle: Text("Fried fish & fries"),
     );
   }
 }
