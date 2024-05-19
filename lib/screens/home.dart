@@ -13,6 +13,7 @@ import 'package:flutter_recipe_app/models/recipe.dart';
 import 'package:flutter_recipe_app/models/recipe_type.dart';
 
 // Screens
+import 'package:flutter_recipe_app/screens/edit.dart';
 import 'package:flutter_recipe_app/screens/recipe.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -109,7 +110,20 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       )),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () async {
+          // Navigate to recipe details screen
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BlocProvider(
+                create: (BuildContext context) => RecipeBloc(),
+                child: const EditScreen(),
+              ),
+            ),
+          );
+
+          _fetchRecipes(_recipeTypes[_selectedType].code);
+        },
         tooltip: 'Add Recipe',
         backgroundColor: Constants.secondaryColor,
         child: const Icon(

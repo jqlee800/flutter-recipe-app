@@ -53,9 +53,9 @@ class _EditScreenState extends State<EditScreen> {
         iconTheme: const IconThemeData(
           color: Colors.white,
         ),
-        title: const Text(
-          'Edit Recipe',
-          style: TextStyle(color: Colors.white),
+        title: Text(
+          widget.recipe == null ? 'Create Recipe' : 'Edit Recipe',
+          style: const TextStyle(color: Colors.white),
         ),
         actions: [
           IconButton(
