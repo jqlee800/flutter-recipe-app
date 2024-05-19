@@ -85,14 +85,21 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: _buildRecipeTypePicker(),
                 ),
               Expanded(
-                child: ListView.builder(
-                    itemCount: _recipes.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 4),
-                        child: _buildRecipeTile(_recipes[index]),
-                      );
-                    }),
+                child: _recipes.isEmpty
+                    ? const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('No recipes found.'),
+                        ],
+                      )
+                    : ListView.builder(
+                        itemCount: _recipes.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 4),
+                            child: _buildRecipeTile(_recipes[index]),
+                          );
+                        }),
               ),
               Container(
                 height: 60,
