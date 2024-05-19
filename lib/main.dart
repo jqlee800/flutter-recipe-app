@@ -12,7 +12,7 @@ import 'package:flutter_recipe_app/models/recipe_type.dart';
 import 'package:flutter_recipe_app/database/recipe_db.dart';
 
 // Screens
-import 'package:flutter_recipe_app/screens/home.dart';
+import 'package:flutter_recipe_app/screens/splash.dart';
 
 final RecipeDatabase recipeDatabase = RecipeDatabase();
 
@@ -31,6 +31,8 @@ void main() async {
 
   // Pre-insert some default recipes
   await recipeDatabase.setupInitialRecipes();
+
+  await recipeDatabase.closeRecipeDb();
 
   print(spInstance.getString('recipeTypes'));
 }
@@ -73,7 +75,7 @@ class RecipeApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Constants.primaryColor),
         useMaterial3: true,
       ),
-      home: const HomeScreen(),
+      home: const SplashScreen(),
     );
   }
 }

@@ -20,6 +20,8 @@ class RecipeDatabase {
     });
   }
 
+  Future closeRecipeDb() async => database.close();
+
   Future<List<Map>> getAll(String table) async {
     List<Map> maps = await database.query(table);
     return maps;
@@ -103,6 +105,4 @@ class RecipeDatabase {
   // Future<int> update(Todo todo) async {
   //   return await db.update(tableTodo, todo.toMap(), where: '$columnId = ?', whereArgs: [todo.id]);
   // }
-
-  // Future close() async => db.close();
 }

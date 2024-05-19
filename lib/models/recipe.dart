@@ -55,7 +55,7 @@ class Recipe {
   Recipe.fromDB(Map<dynamic, dynamic> map)
       : recipeId = map['recipeId'],
         name = map['name'],
-        code = map['code'],
+        code = codeStringToEnum(map['code']),
         description = map['description'],
         image = map['image'],
         steps = [],

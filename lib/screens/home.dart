@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_recipe_app/bloc/recipe_bloc.dart';
+import 'package:flutter_recipe_app/bloc/recipe_event.dart';
 
-import 'package:flutter_recipe_app/database/recipe_db.dart';
 import 'package:flutter_recipe_app/models/constants.dart';
 import 'package:flutter_recipe_app/models/recipe.dart';
 
@@ -14,13 +16,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final RecipeDatabase recipeDatabase = RecipeDatabase();
-
   List<Recipe> _recipes = [];
 
   @override
   void initState() {
     super.initState();
+    context.read<RecipeBloc>().add(RecipeGetAll());
   }
 
   @override
@@ -32,12 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
         backgroundColor: Constants.primaryColor,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: const Text(
           'Recipes',
           style: TextStyle(color: Colors.white),
@@ -109,18 +105,5 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
-  }
-
-  // -------------------------- METHODS --------------------------
-  Future<List<Recipe>> getAllRecipes() async {
-    List<Map> dbRecipes = await recipeDatabase.getAll(Constants.tableRecipe);
-
-    List<Recipe> results = [];
-
-    for (Map recipe in dbRecipes) {
-      results.add(Recipe.fromDB(recipe));
-    }
-
-    return results;
   }
 }
