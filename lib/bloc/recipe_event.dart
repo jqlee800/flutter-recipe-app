@@ -18,6 +18,14 @@ class RecipeGetAll extends RecipeEvent {
   });
 }
 
+class RecipeGetDetails extends RecipeEvent {
+  final int recipeId;
+
+  RecipeGetDetails({
+    required this.recipeId,
+  });
+}
+
 class RecipeDelete extends RecipeEvent {
   final int recipeId;
 

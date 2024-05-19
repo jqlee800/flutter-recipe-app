@@ -1,13 +1,15 @@
 class RecipeIngredient {
   final int? ingredientId;
   final String name;
-  final int quantity;
-  final IngredientMeasurement measurement;
+  final String image;
+  final int? quantity;
+  final IngredientMeasurement? measurement;
   final int? recipeId;
 
   const RecipeIngredient(
     this.ingredientId,
     this.name,
+    this.image,
     this.quantity,
     this.measurement,
     this.recipeId,
@@ -16,6 +18,7 @@ class RecipeIngredient {
   RecipeIngredient.fromJson(Map<String, dynamic> json)
       : ingredientId = json['ingredientId'],
         name = json['name'],
+        image = json['image'],
         quantity = json['quantity'],
         measurement = json['measurement'],
         recipeId = json['recipeId'];
@@ -24,11 +27,29 @@ class RecipeIngredient {
     return {
       'ingredientId': ingredientId,
       'name': name,
+      'image': image,
       'quantity': quantity,
-      'measurement': measurementEnumToString(measurement),
+      'measurement': measurement != null ? measurementEnumToString(measurement!) : measurement,
       'recipeId': recipeId,
     };
   }
+
+  Map<String, dynamic> toDB() {
+    return {
+      'ingredientId': ingredientId,
+      'name': name,
+      'image': image,
+      'recipeId': recipeId,
+    };
+  }
+
+  RecipeIngredient.fromDB(Map<dynamic, dynamic> map)
+      : ingredientId = map['ingredientId'],
+        name = map['name'],
+        image = map['image'],
+        quantity = null,
+        measurement = null,
+        recipeId = map['recipeId'];
 }
 
 enum IngredientMeasurement {

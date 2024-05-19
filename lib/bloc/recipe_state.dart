@@ -1,5 +1,6 @@
 // Models
 import 'package:flutter_recipe_app/models/recipe.dart';
+import 'package:flutter_recipe_app/models/recipe_ingredient.dart';
 import 'package:flutter_recipe_app/models/recipe_type.dart';
 
 abstract class RecipeState {}
@@ -15,6 +16,14 @@ class RecipeTypeGetAllSuccess extends RecipeState {
 
   RecipeTypeGetAllSuccess({
     this.types = const [],
+  });
+}
+
+class RecipeGetDetailsSuccess extends RecipeState {
+  List<RecipeIngredient> ingredients;
+
+  RecipeGetDetailsSuccess({
+    this.ingredients = const [],
   });
 }
 

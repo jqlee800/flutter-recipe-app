@@ -1,7 +1,5 @@
 import 'dart:convert';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_recipe_app/models/recipe_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // Bloc
@@ -14,6 +12,8 @@ import 'package:flutter_recipe_app/database/recipe_db.dart';
 // Models
 import 'package:flutter_recipe_app/models/constants.dart';
 import 'package:flutter_recipe_app/models/recipe.dart';
+import 'package:flutter_recipe_app/models/recipe_ingredient.dart';
+import 'package:flutter_recipe_app/models/recipe_type.dart';
 
 class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
   final RecipeDatabase recipeDatabase = RecipeDatabase();
@@ -21,6 +21,7 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
   RecipeBloc() : super(RecipeInit()) {
     on<RecipeTypeGetAll>(_onRecipeTypeGetAll);
     on<RecipeGetAll>(_onRecipeGetAll);
+    on<RecipeGetDetails>(_onRecipeGetDetails);
     on<RecipeDelete>(_onRecipeDelete);
   }
 
@@ -57,6 +58,23 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
     }
 
     emit(RecipeTypeGetAllSuccess(types: types));
+  }
+
+  // Get recipe details by recipeId
+  void _onRecipeGetDetails(RecipeGetDetails event, Emitter<RecipeState> emit) async {
+    List<Map> dbIngredients = await recipeDatabase.getAll(
+      Constants.tableIngredient,
+      whereClause: '${Constants.colIngredientRecipeId}=?',
+      whereArgs: [event.recipeId],
+    );
+
+    List<RecipeIngredient> ingredients = [];
+
+    for (Map recipe in dbIngredients) {
+      ingredients.add(RecipeIngredient.fromDB(recipe));
+    }
+
+    emit(RecipeGetDetailsSuccess(ingredients: ingredients));
   }
 
   // Delete recipe by recipeId
