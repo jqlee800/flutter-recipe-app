@@ -26,13 +26,8 @@ void main() async {
   String recipeTypeJson = jsonEncode(types);
   spInstance.setString('recipeTypes', recipeTypeJson);
 
-  // Instantiate local db
-  await recipeDatabase.openRecipeDb('recipe.db');
-
   // Pre-insert some default recipes
   await recipeDatabase.setupInitialRecipes();
-
-  await recipeDatabase.closeRecipeDb();
 
   print(spInstance.getString('recipeTypes'));
 }

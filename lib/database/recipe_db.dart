@@ -7,8 +7,15 @@ import 'package:flutter_recipe_app/models/constants.dart';
 class RecipeDatabase {
   late Database database;
 
-  Future openRecipeDb(String path) async {
-    database = await openDatabase(path, version: 1, onCreate: (Database db, int version) async {
+  Future<List<Map>> getAll(String table) async {
+    await openRecipeDb();
+    List<Map> maps = await database.query(table);
+    await closeRecipeDb();
+    return maps;
+  }
+
+  Future openRecipeDb() async {
+    database = await openDatabase('recipe.db', version: 1, onCreate: (Database db, int version) async {
       await db.execute('''
         create table ${Constants.tableRecipe} (
           ${Constants.colRecipeId} integer primary key autoincrement,
@@ -22,12 +29,9 @@ class RecipeDatabase {
 
   Future closeRecipeDb() async => database.close();
 
-  Future<List<Map>> getAll(String table) async {
-    List<Map> maps = await database.query(table);
-    return maps;
-  }
-
   Future setupInitialRecipes() async {
+    await openRecipeDb();
+
     await database.insert(
       Constants.tableRecipe,
       const Recipe(
@@ -92,6 +96,8 @@ class RecipeDatabase {
         null,
       ).toDB(),
     );
+
+    await closeRecipeDb();
   }
   // Future<Todo> insert(Todo todo) async {
   //   todo.id = await db.insert(tableTodo, todo.toMap());

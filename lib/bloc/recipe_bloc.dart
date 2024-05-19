@@ -19,8 +19,6 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
   }
 
   Future<List<Recipe>> getAllRecipes() async {
-    await recipeDatabase.openRecipeDb('recipe.db');
-
     List<Map> dbRecipes = await recipeDatabase.getAll(Constants.tableRecipe);
 
     List<Recipe> results = [];
@@ -28,8 +26,6 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
     for (Map recipe in dbRecipes) {
       results.add(Recipe.fromDB(recipe));
     }
-
-    await recipeDatabase.closeRecipeDb();
 
     return results;
   }

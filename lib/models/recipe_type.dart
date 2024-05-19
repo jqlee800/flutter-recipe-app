@@ -78,3 +78,25 @@ String codeEnumToString(RecipeTypeCode code) {
       return 'NONE';
   }
 }
+
+String enumToDisplayName(RecipeTypeCode code) {
+  switch (code) {
+    case RecipeTypeCode.APTZ:
+      return 'Appetizers';
+
+    case RecipeTypeCode.MAIN:
+      return 'Main Courses';
+
+    case RecipeTypeCode.DSRT:
+      return 'Desserts';
+
+    case RecipeTypeCode.SLDS:
+      return 'Salads';
+
+    case RecipeTypeCode.BVRG:
+      return 'Beverages';
+
+    default:
+      return 'All';
+  }
+}

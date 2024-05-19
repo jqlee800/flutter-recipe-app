@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_recipe_app/bloc/recipe_bloc.dart';
 import 'package:flutter_recipe_app/bloc/recipe_event.dart';
+import 'package:flutter_recipe_app/bloc/recipe_state.dart';
 
 import 'package:flutter_recipe_app/models/constants.dart';
 import 'package:flutter_recipe_app/models/recipe.dart';
+import 'package:flutter_recipe_app/models/recipe_type.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
@@ -34,21 +36,35 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Constants.primaryColor,
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
         title: const Text(
           'Recipes',
           style: TextStyle(color: Colors.white),
         ),
       ),
       body: Center(
-        child: ListView.builder(
-            itemCount: 50,
-            itemBuilder: (BuildContext context, int index) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 4),
-                child: _buildRecipeTile(),
-              );
-            }),
-      ),
+          child: BlocListener<RecipeBloc, RecipeState>(
+        listener: (BuildContext context, RecipeState state) async {
+          if (state is RecipeGetAllSuccess) {
+            setState(() {
+              _recipes = state.recipes;
+            });
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListView.builder(
+              itemCount: _recipes.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 4),
+                  child: _buildRecipeTile(_recipes[index]),
+                );
+              }),
+        ),
+      )),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         tooltip: 'Add Recipe',
@@ -62,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   // -------------------------- WIDGETS --------------------------
-  Widget _buildRecipeTile() {
+  Widget _buildRecipeTile(Recipe recipe) {
     return ListTile(
       tileColor: Colors.grey.shade100,
       leading: Container(
@@ -78,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
           color: Constants.primaryColor,
         ),
       ),
-      title: Text("Signature Fish and Chips"),
+      title: Text(recipe.name),
       // Recipe type chip
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -94,9 +110,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 border: Border.all(
                   color: Constants.secondaryColor,
                 )),
-            child: const Text(
-              "Main Courses",
-              style: TextStyle(
+            child: Text(
+              enumToDisplayName(recipe.code),
+              style: const TextStyle(
                 color: Constants.secondaryColor,
                 fontSize: 10,
               ),
