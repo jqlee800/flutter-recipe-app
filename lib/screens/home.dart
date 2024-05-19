@@ -114,19 +114,29 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildRecipeTile(Recipe recipe) {
     return ListTile(
       tileColor: Colors.grey.shade100,
-      leading: Container(
-        padding: const EdgeInsets.all(4),
-        width: 60,
-        height: 60,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          color: Colors.indigo.shade100,
-        ),
-        child: const Icon(
-          Icons.image,
-          color: Constants.primaryColor,
-        ),
-      ),
+      leading: recipe.image != null
+          ? ClipRRect(
+              borderRadius: BorderRadius.circular(5.0),
+              child: Image.network(
+                recipe.image!,
+                height: 60.0,
+                width: 60.0,
+                fit: BoxFit.cover,
+              ),
+            )
+          : Container(
+              padding: const EdgeInsets.all(4),
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: Colors.indigo.shade100,
+              ),
+              child: const Icon(
+                Icons.image,
+                color: Constants.primaryColor,
+              ),
+            ),
       trailing: IconButton(
         icon: Icon(
           Icons.delete_rounded,
