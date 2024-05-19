@@ -64,7 +64,18 @@ class _EditScreenState extends State<EditScreen> {
             IconButton(
               icon: const Icon(Icons.save_rounded),
               tooltip: 'Save',
-              onPressed: () {},
+              onPressed: () {
+                context.read<RecipeBloc>().add(RecipeUpdate(
+                        recipe: Recipe(
+                      widget.recipe?.recipeId,
+                      nameController.text,
+                      widget.recipe!.code,
+                      descriptionController.text,
+                      imageController.text,
+                      null,
+                      null,
+                    )));
+              },
             ),
           ],
         ),

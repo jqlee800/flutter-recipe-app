@@ -30,6 +30,10 @@ class RecipeGetDetailsSuccess extends RecipeState {
   });
 }
 
+class RecipeUpdateSuccess extends RecipeState {
+  RecipeUpdateSuccess();
+}
+
 class RecipeDeleteSuccess extends RecipeState {
   RecipeDeleteSuccess();
 }

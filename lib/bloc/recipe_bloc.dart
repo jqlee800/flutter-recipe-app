@@ -23,6 +23,7 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
     on<RecipeTypeGetAll>(_onRecipeTypeGetAll);
     on<RecipeGetAll>(_onRecipeGetAll);
     on<RecipeGetDetails>(_onRecipeGetDetails);
+    on<RecipeUpdate>(_onRecipeUpdate);
     on<RecipeDelete>(_onRecipeDelete);
   }
 
@@ -91,6 +92,18 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
       ingredients: ingredients,
       steps: steps,
     ));
+  }
+
+  // Update recipe information
+  void _onRecipeUpdate(RecipeUpdate event, Emitter<RecipeState> emit) async {
+    await recipeDatabase.update(
+      Constants.tableRecipe,
+      whereClause: '${Constants.colRecipeId}=?',
+      whereArgs: [event.recipe.recipeId!],
+      body: event.recipe.toDB(),
+    );
+
+    emit(RecipeUpdateSuccess());
   }
 
   // Delete recipe by recipeId

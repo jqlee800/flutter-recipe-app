@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_recipe_app/models/recipe.dart';
 
 // Models
 import 'package:flutter_recipe_app/models/recipe_type.dart';
@@ -23,6 +24,14 @@ class RecipeGetDetails extends RecipeEvent {
 
   RecipeGetDetails({
     required this.recipeId,
+  });
+}
+
+class RecipeUpdate extends RecipeEvent {
+  final Recipe recipe;
+
+  RecipeUpdate({
+    required this.recipe,
   });
 }
 

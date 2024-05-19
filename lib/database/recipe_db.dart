@@ -26,6 +26,18 @@ class RecipeDatabase {
     return maps.isNotEmpty ? maps.first : null;
   }
 
+  Future<int> update(
+    String table, {
+    String? whereClause,
+    List<Object>? whereArgs,
+    Map<String, dynamic> body = const {},
+  }) async {
+    await openRecipeDb();
+    int updatedId = await database.update(table, body, where: whereClause, whereArgs: whereArgs);
+    await closeRecipeDb();
+    return updatedId;
+  }
+
   Future<int> delete(String table, {String? whereClause, List<Object>? whereArgs}) async {
     await openRecipeDb();
     int deletedId = await database.delete(table, where: whereClause, whereArgs: whereArgs);
@@ -514,9 +526,5 @@ class RecipeDatabase {
   // Future<Todo> insert(Todo todo) async {
   //   todo.id = await db.insert(tableTodo, todo.toMap());
   //   return todo;
-  // }
-
-  // Future<int> update(Todo todo) async {
-  //   return await db.update(tableTodo, todo.toMap(), where: '$columnId = ?', whereArgs: [todo.id]);
   // }
 }
