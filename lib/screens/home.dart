@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     context.read<RecipeBloc>().add(RecipeTypeGetAll());
-    _fetchRecipes(RecipeTypeCode.APTZ);
+    _fetchRecipes(RecipeTypeCode.NONE);
   }
 
   @override

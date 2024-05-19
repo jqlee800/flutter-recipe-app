@@ -31,8 +31,8 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
   void _onRecipeGetAll(RecipeGetAll event, Emitter<RecipeState> emit) async {
     List<Map> dbRecipes = await recipeDatabase.getAll(
       Constants.tableRecipe,
-      whereClause: '${Constants.colRecipeCode}=?',
-      whereArgs: [codeEnumToString(event.code)],
+      whereClause: event.code != RecipeTypeCode.NONE ? '${Constants.colRecipeCode}=?' : null,
+      whereArgs: event.code != RecipeTypeCode.NONE ? [codeEnumToString(event.code)] : null,
     );
 
     List<Recipe> results = [];
