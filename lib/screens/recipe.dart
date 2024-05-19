@@ -13,6 +13,9 @@ import 'package:flutter_recipe_app/models/recipe_ingredient.dart';
 import 'package:flutter_recipe_app/models/recipe_step.dart';
 import 'package:flutter_recipe_app/models/recipe_type.dart';
 
+// Screen
+import 'package:flutter_recipe_app/screens/edit.dart';
+
 class RecipeScreen extends StatefulWidget {
   final Recipe recipe;
 
@@ -58,6 +61,24 @@ class _RecipeScreenState extends State<RecipeScreen> {
           'Recipe Details',
           style: TextStyle(color: Colors.white),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.edit),
+            tooltip: 'Edit',
+            onPressed: () {
+              // Navigate to recipe details screen
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BlocProvider(
+                    create: (BuildContext context) => RecipeBloc(),
+                    child: EditScreen(recipe: widget.recipe),
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
