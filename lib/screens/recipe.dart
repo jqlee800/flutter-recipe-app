@@ -66,9 +66,9 @@ class _RecipeScreenState extends State<RecipeScreen> {
           IconButton(
             icon: const Icon(Icons.edit),
             tooltip: 'Edit',
-            onPressed: () {
+            onPressed: () async {
               // Navigate to recipe details screen
-              Navigator.push(
+              Recipe updatedRecipe = await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => BlocProvider(
@@ -77,6 +77,10 @@ class _RecipeScreenState extends State<RecipeScreen> {
                   ),
                 ),
               );
+
+              setState(() {
+                _recipe = updatedRecipe;
+              });
             },
           ),
         ],
