@@ -42,7 +42,7 @@ class SplashScreen extends StatelessWidget {
               child: ElevatedButton(
                 child: const Text('Get Started'),
                 onPressed: () {
-                  // Navigate to homme screen
+                  // Navigate to home screen
                   Navigator.push(
                     context,
                     MaterialPageRoute(

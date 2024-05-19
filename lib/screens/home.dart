@@ -12,6 +12,9 @@ import 'package:flutter_recipe_app/models/constants.dart';
 import 'package:flutter_recipe_app/models/recipe.dart';
 import 'package:flutter_recipe_app/models/recipe_type.dart';
 
+// Screens
+import 'package:flutter_recipe_app/screens/recipe.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
     super.key,
@@ -113,6 +116,18 @@ class _HomeScreenState extends State<HomeScreen> {
   // -------------------------- WIDGETS --------------------------
   Widget _buildRecipeTile(Recipe recipe) {
     return ListTile(
+      onTap: () {
+        // Navigate to recipe details screen
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BlocProvider(
+              create: (BuildContext context) => RecipeBloc(),
+              child: const RecipeScreen(),
+            ),
+          ),
+        );
+      },
       tileColor: Colors.grey.shade100,
       leading: recipe.image != null
           ? ClipRRect(
