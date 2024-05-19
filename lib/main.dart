@@ -9,9 +9,12 @@ import 'package:xml/xml.dart' as xml;
 // Models
 import 'package:flutter_recipe_app/models/constants.dart';
 import 'package:flutter_recipe_app/models/recipe_type.dart';
+import 'package:flutter_recipe_app/database/recipe_db.dart';
 
 // Screens
 import 'package:flutter_recipe_app/screens/home.dart';
+
+final RecipeDatabase recipeDatabase = RecipeDatabase();
 
 void main() async {
   runApp(const RecipeApp());
@@ -22,6 +25,12 @@ void main() async {
   final SharedPreferences spInstance = await SharedPreferences.getInstance();
   String recipeTypeJson = jsonEncode(types);
   spInstance.setString('recipeTypes', recipeTypeJson);
+
+  // Instantiate local db
+  await recipeDatabase.openRecipeDb('recipe.db');
+
+  // Pre-insert some default recipes
+  await recipeDatabase.setupInitialRecipes();
 
   print(spInstance.getString('recipeTypes'));
 }

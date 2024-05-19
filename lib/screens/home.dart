@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_recipe_app/database/recipe_db.dart';
 import 'package:flutter_recipe_app/models/constants.dart';
+import 'package:flutter_recipe_app/models/recipe.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
@@ -12,6 +14,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final RecipeDatabase recipeDatabase = RecipeDatabase();
+
+  List<Recipe> _recipes = [];
+
   @override
   void initState() {
     super.initState();
@@ -59,6 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  // -------------------------- WIDGETS --------------------------
   Widget _buildRecipeTile() {
     return ListTile(
       tileColor: Colors.grey.shade100,
@@ -102,5 +109,18 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
+  }
+
+  // -------------------------- METHODS --------------------------
+  Future<List<Recipe>> getAllRecipes() async {
+    List<Map> dbRecipes = await recipeDatabase.getAll(Constants.tableRecipe);
+
+    List<Recipe> results = [];
+
+    for (Map recipe in dbRecipes) {
+      results.add(Recipe.fromDB(recipe));
+    }
+
+    return results;
   }
 }

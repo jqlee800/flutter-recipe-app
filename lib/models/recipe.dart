@@ -7,7 +7,7 @@ class Recipe {
   final String name;
   final RecipeTypeCode code;
   final String? description;
-  final String image;
+  final String? image;
   final List<RecipeStep>? steps;
   final List<RecipeIngredient>? ingredients;
 
@@ -41,4 +41,23 @@ class Recipe {
       'ingredients': ingredients,
     };
   }
+
+  Map<String, dynamic> toDB() {
+    return {
+      'recipeId': recipeId,
+      'name': name,
+      'code': codeEnumToString(code),
+      'description': description,
+      'image': image
+    };
+  }
+
+  Recipe.fromDB(Map<dynamic, dynamic> map)
+      : recipeId = map['recipeId'],
+        name = map['name'],
+        code = map['code'],
+        description = map['description'],
+        image = map['image'],
+        steps = [],
+        ingredients = [];
 }
