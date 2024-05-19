@@ -123,9 +123,9 @@ class _HomeScreenState extends State<HomeScreen> {
   // -------------------------- WIDGETS --------------------------
   Widget _buildRecipeTile(Recipe recipe) {
     return ListTile(
-      onTap: () {
+      onTap: () async {
         // Navigate to recipe details screen
-        Navigator.push(
+        await Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => BlocProvider(
@@ -134,6 +134,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         );
+
+        _fetchRecipes(_recipeTypes[_selectedType].code);
       },
       tileColor: Colors.grey.shade100,
       leading: recipe.image != null

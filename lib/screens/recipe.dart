@@ -62,6 +62,9 @@ class _RecipeScreenState extends State<RecipeScreen> {
           'Recipe Details',
           style: TextStyle(color: Colors.white),
         ),
+        leading: BackButton(onPressed: () {
+          Navigator.pop(context, _recipe);
+        }),
         actions: [
           IconButton(
             icon: const Icon(Icons.edit),
