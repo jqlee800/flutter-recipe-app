@@ -25,4 +25,10 @@ class RecipeStep {
       'recipeId': recipeId,
     };
   }
+
+  RecipeStep.fromDB(Map<dynamic, dynamic> json)
+      : stepId = json['stepId'],
+        name = json['name'],
+        description = json['description'],
+        recipeId = json['recipeId'];
 }

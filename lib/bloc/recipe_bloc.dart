@@ -14,6 +14,7 @@ import 'package:flutter_recipe_app/models/constants.dart';
 import 'package:flutter_recipe_app/models/recipe.dart';
 import 'package:flutter_recipe_app/models/recipe_ingredient.dart';
 import 'package:flutter_recipe_app/models/recipe_type.dart';
+import 'package:flutter_recipe_app/models/recipe_step.dart';
 
 class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
   final RecipeDatabase recipeDatabase = RecipeDatabase();
@@ -74,7 +75,22 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
       ingredients.add(RecipeIngredient.fromDB(recipe));
     }
 
-    emit(RecipeGetDetailsSuccess(ingredients: ingredients));
+    List<Map> dbSteps = await recipeDatabase.getAll(
+      Constants.tableStep,
+      whereClause: '${Constants.colStepRecipeId}=?',
+      whereArgs: [event.recipeId],
+    );
+
+    List<RecipeStep> steps = [];
+
+    for (Map step in dbSteps) {
+      steps.add(RecipeStep.fromDB(step));
+    }
+
+    emit(RecipeGetDetailsSuccess(
+      ingredients: ingredients,
+      steps: steps,
+    ));
   }
 
   // Delete recipe by recipeId

@@ -5,6 +5,7 @@ import 'package:flutter_recipe_app/models/constants.dart';
 import 'package:flutter_recipe_app/models/recipe.dart';
 import 'package:flutter_recipe_app/models/recipe_type.dart';
 import 'package:flutter_recipe_app/models/recipe_ingredient.dart';
+import 'package:flutter_recipe_app/models/recipe_step.dart';
 
 class RecipeDatabase {
   late Database database;
@@ -117,6 +118,48 @@ class RecipeDatabase {
                   recipeId1)
               .toDB());
 
+      await database.insert(
+          Constants.tableStep,
+          RecipeStep(null, 'Prepare the Fish',
+                  'Pat the fish fillets dry with paper towels and season them with salt and pepper.', recipeId1)
+              .toJson());
+
+      await database.insert(
+          Constants.tableStep,
+          RecipeStep(
+                  null,
+                  'Make the Batter',
+                  'In a bowl, mix flour, baking powder, and a pinch of salt. Gradually whisk in cold water or beer until the batter is smooth.',
+                  recipeId1)
+              .toJson());
+
+      await database.insert(
+          Constants.tableStep,
+          RecipeStep(
+                  null,
+                  'Prepare the Potatoes',
+                  'Peel and cut the russet potatoes into thick strips. Soak them in cold water for 30 minutes, then drain and pat dry.',
+                  recipeId1)
+              .toJson());
+
+      await database.insert(
+          Constants.tableStep,
+          RecipeStep(
+                  null,
+                  'Fry the Potatoes',
+                  'Heat oil in a deep fryer or large pot to 350°F (175°C). Fry the potatoes in batches until golden and crispy, about 5-6 minutes. Remove and drain on paper towels.',
+                  recipeId1)
+              .toJson());
+
+      await database.insert(
+          Constants.tableStep,
+          RecipeStep(
+                  null,
+                  'Fry the Fish',
+                  'Dip the seasoned fish fillets into the batter, allowing any excess to drip off. Carefully place them into the hot oil and fry until golden brown and cooked through, about 4-5 minutes per side. Remove and drain on paper towels.',
+                  recipeId1)
+              .toJson());
+
       // ----------------------------- BRUSCHETTA -----------------------------
       int recipeId2 = await database.insert(
         Constants.tableRecipe,
@@ -163,6 +206,48 @@ class RecipeDatabase {
                   null,
                   recipeId2)
               .toDB());
+
+      await database.insert(
+          Constants.tableStep,
+          RecipeStep(null, 'Prepare the Bread',
+                  'Slice the baguette into 1/2-inch thick slices. Lightly brush each slice with olive oil.', recipeId2)
+              .toJson());
+
+      await database.insert(
+          Constants.tableStep,
+          RecipeStep(
+                  null,
+                  'Toast the Bread',
+                  'Place the bread slices on a baking sheet and toast in the oven at 400°F (200°C) for about 5-7 minutes, or until golden and crispy.',
+                  recipeId2)
+              .toJson());
+
+      await database.insert(
+          Constants.tableStep,
+          RecipeStep(
+                  null,
+                  'Prepare the Tomatoes',
+                  'Dice the tomatoes and place them in a bowl. Add chopped basil, minced garlic, olive oil, salt, and pepper. Mix well to combine.',
+                  recipeId2)
+              .toJson());
+
+      await database.insert(
+          Constants.tableStep,
+          RecipeStep(
+                  null,
+                  'Assemble the Bruschetta',
+                  'Spoon the tomato mixture onto the toasted bread slices. Ensure each slice is evenly topped.',
+                  recipeId2)
+              .toJson());
+
+      await database.insert(
+          Constants.tableStep,
+          RecipeStep(
+                  null,
+                  'Serve',
+                  'Arrange the bruschetta on a serving platter. Drizzle with balsamic glaze or extra olive oil if desired, and serve immediately.',
+                  recipeId2)
+              .toJson());
 
       // ----------------------------- CHOCOLATE LAVA CAKE -----------------------------
       int recipeId3 = await database.insert(
@@ -211,6 +296,51 @@ class RecipeDatabase {
                   recipeId3)
               .toDB());
 
+      await database.insert(
+          Constants.tableStep,
+          RecipeStep(
+                  null,
+                  'Prepare the Ramekins',
+                  'Preheat the oven to 425°F (220°C). Grease the ramekins with butter and dust with cocoa powder to prevent sticking.',
+                  recipeId3)
+              .toJson());
+
+      await database.insert(
+          Constants.tableStep,
+          RecipeStep(
+                  null,
+                  'Melt Chocolate and Butter',
+                  'In a double boiler, melt the dark chocolate and butter together until smooth. Remove from heat and let it cool slightly.',
+                  recipeId3)
+              .toJson());
+
+      await database.insert(
+          Constants.tableStep,
+          RecipeStep(
+                  null,
+                  'Mix the Batter',
+                  'In a bowl, whisk together the eggs, egg yolks, and sugar until thick and pale. Gradually fold in the melted chocolate mixture and then gently fold in the flour until just combined.',
+                  recipeId3)
+              .toJson());
+
+      await database.insert(
+          Constants.tableStep,
+          RecipeStep(
+                  null,
+                  'Fill the Ramekins',
+                  'Pour the batter into the prepared ramekins, filling them about 3/4 full. Place the ramekins on a baking sheet.',
+                  recipeId3)
+              .toJson());
+
+      await database.insert(
+          Constants.tableStep,
+          RecipeStep(
+                  null,
+                  'Bake and Serve',
+                  'Bake in the preheated oven for 12-14 minutes, or until the edges are set but the center is still soft. Remove from the oven, let them cool for a minute, then invert onto plates. Serve immediately with a dusting of powdered sugar or a scoop of vanilla ice cream.',
+                  recipeId3)
+              .toJson());
+
       // ----------------------------- CAESAR SALAD -----------------------------
       int recipeId4 = await database.insert(
         Constants.tableRecipe,
@@ -252,6 +382,48 @@ class RecipeDatabase {
                   null,
                   recipeId4)
               .toDB());
+
+      await database.insert(
+          Constants.tableStep,
+          RecipeStep(null, 'Prepare the Lettuce',
+                  'Wash and dry the romaine lettuce. Chop or tear the leaves into bite-sized pieces.', recipeId4)
+              .toJson());
+
+      await database.insert(
+          Constants.tableStep,
+          RecipeStep(
+                  null,
+                  'Make the Dressing',
+                  'In a bowl, whisk together minced garlic, anchovy paste, lemon juice, Dijon mustard, Worcestershire sauce, and egg yolk. Slowly whisk in olive oil until the dressing is emulsified. Stir in grated Parmesan cheese.',
+                  recipeId4)
+              .toJson());
+
+      await database.insert(
+          Constants.tableStep,
+          RecipeStep(
+                  null,
+                  'Toast the Croutons',
+                  'Cut a baguette into small cubes. Toss the cubes with olive oil, salt, and pepper. Spread on a baking sheet and bake at 375°F (190°C) for about 10-15 minutes, or until golden and crisp.',
+                  recipeId4)
+              .toJson());
+
+      await database.insert(
+          Constants.tableStep,
+          RecipeStep(
+                  null,
+                  'Toss the Salad',
+                  'In a large bowl, combine the chopped romaine lettuce and croutons. Pour the dressing over the salad and toss to coat evenly.',
+                  recipeId4)
+              .toJson());
+
+      await database.insert(
+          Constants.tableStep,
+          RecipeStep(
+                  null,
+                  'Serve',
+                  'Divide the salad among plates. Top with shaved Parmesan cheese and freshly ground black pepper. Serve immediately.',
+                  recipeId4)
+              .toJson());
 
       // ----------------------------- MOJITO -----------------------------
       int recipeId5 = await database.insert(
@@ -299,6 +471,42 @@ class RecipeDatabase {
                   null,
                   recipeId5)
               .toDB());
+
+      await database.insert(
+          Constants.tableStep,
+          RecipeStep(
+                  null,
+                  'Muddle the Mint',
+                  'Place the mint leaves and sugar in a glass. Use a muddler or the back of a spoon to gently crush the mint leaves to release their flavor.',
+                  recipeId5)
+              .toJson());
+
+      await database.insert(
+          Constants.tableStep,
+          RecipeStep(
+                  null,
+                  'Add Lime Juice',
+                  'Squeeze the juice of half a lime into the glass. Add the lime wedges to the glass and muddle them with the mint and sugar.',
+                  recipeId5)
+              .toJson());
+
+      await database.insert(
+          Constants.tableStep,
+          RecipeStep(null, 'Add the Rum', 'Pour the white rum into the glass and stir well to combine the ingredients.',
+                  recipeId5)
+              .toJson());
+
+      await database.insert(
+          Constants.tableStep,
+          RecipeStep(null, 'Add Ice and Soda Water',
+                  'Fill the glass with ice cubes, then top off with soda water. Stir gently to mix.', recipeId5)
+              .toJson());
+
+      await database.insert(
+          Constants.tableStep,
+          RecipeStep(null, 'Garnish and Serve',
+                  'Garnish the mojito with a sprig of fresh mint and a slice of lime. Serve immediately.', recipeId5)
+              .toJson());
 
       await closeRecipeDb();
     }
