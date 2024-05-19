@@ -71,7 +71,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
             tooltip: 'Edit',
             onPressed: () async {
               // Navigate to recipe details screen
-              Recipe updatedRecipe = await Navigator.push(
+              Recipe? updatedRecipe = await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => BlocProvider(
@@ -81,9 +81,11 @@ class _RecipeScreenState extends State<RecipeScreen> {
                 ),
               );
 
-              setState(() {
-                _recipe = updatedRecipe;
-              });
+              if (updatedRecipe != null) {
+                setState(() {
+                  _recipe = updatedRecipe;
+                });
+              }
             },
           ),
         ],
