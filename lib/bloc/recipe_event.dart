@@ -12,7 +12,16 @@ class RecipeTypeGetAll extends RecipeEvent {
 
 class RecipeGetAll extends RecipeEvent {
   final RecipeTypeCode code;
+
   RecipeGetAll({
     required this.code,
+  });
+}
+
+class RecipeDelete extends RecipeEvent {
+  final int recipeId;
+
+  RecipeDelete({
+    required this.recipeId,
   });
 }

@@ -1,3 +1,4 @@
+// Models
 import 'package:flutter_recipe_app/models/recipe.dart';
 import 'package:flutter_recipe_app/models/recipe_type.dart';
 
@@ -15,6 +16,10 @@ class RecipeTypeGetAllSuccess extends RecipeState {
   RecipeTypeGetAllSuccess({
     this.types = const [],
   });
+}
+
+class RecipeDeleteSuccess extends RecipeState {
+  RecipeDeleteSuccess();
 }
 
 class RecipeInit extends RecipeState {

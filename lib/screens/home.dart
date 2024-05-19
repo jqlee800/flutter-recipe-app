@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     context.read<RecipeBloc>().add(RecipeTypeGetAll());
-    context.read<RecipeBloc>().add(RecipeGetAll(code: RecipeTypeCode.APTZ));
+    _fetchRecipes(RecipeTypeCode.APTZ);
   }
 
   @override
@@ -65,6 +65,11 @@ class _HomeScreenState extends State<HomeScreen> {
             setState(() {
               _recipeTypes = state.types;
             });
+          }
+
+          // Refresh the list after successful deletion
+          if (state is RecipeDeleteSuccess) {
+            _fetchRecipes(_recipeTypes[_selectedType].code);
           }
         },
         child: Padding(
@@ -128,7 +133,11 @@ class _HomeScreenState extends State<HomeScreen> {
           color: Colors.red.shade800,
         ),
         tooltip: 'Delete',
-        onPressed: () {},
+        onPressed: () {
+          context.read<RecipeBloc>().add(RecipeDelete(
+                recipeId: recipe.recipeId!,
+              ));
+        },
       ),
       title: Text(recipe.name),
       // Recipe type chip
@@ -187,12 +196,7 @@ class _HomeScreenState extends State<HomeScreen> {
             onSelectedItemChanged: (int selectedItem) {
               setState(() {
                 _selectedType = selectedItem;
-
-                context.read<RecipeBloc>().add(
-                      RecipeGetAll(
-                        code: _recipeTypes[_selectedType].code,
-                      ),
-                    );
+                _fetchRecipes(_recipeTypes[_selectedType].code);
               });
             },
             children: List<Widget>.generate(_recipeTypes.length, (int index) {
@@ -243,5 +247,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  // ---------------------------- METHODS -----------------------------
+  void _fetchRecipes(RecipeTypeCode code) {
+    context.read<RecipeBloc>().add(RecipeGetAll(code: code));
   }
 }

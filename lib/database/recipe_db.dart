@@ -19,6 +19,13 @@ class RecipeDatabase {
     return maps;
   }
 
+  Future<int> delete(String table, {String? whereClause, List<Object>? whereArgs}) async {
+    await openRecipeDb();
+    int deletedId = await database.delete(table, where: whereClause, whereArgs: whereArgs);
+    await closeRecipeDb();
+    return deletedId;
+  }
+
   Future openRecipeDb() async {
     database = await openDatabase('recipe.db', version: 1, onCreate: (Database db, int version) async {
       await db.execute('''
@@ -107,10 +114,6 @@ class RecipeDatabase {
   // Future<Todo> insert(Todo todo) async {
   //   todo.id = await db.insert(tableTodo, todo.toMap());
   //   return todo;
-  // }
-
-  // Future<int> delete(int id) async {
-  //   return await db.delete(tableTodo, where: '$columnId = ?', whereArgs: [id]);
   // }
 
   // Future<int> update(Todo todo) async {

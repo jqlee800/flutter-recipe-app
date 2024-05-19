@@ -21,19 +21,15 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
   RecipeBloc() : super(RecipeInit()) {
     on<RecipeTypeGetAll>(_onRecipeTypeGetAll);
     on<RecipeGetAll>(_onRecipeGetAll);
+    on<RecipeDelete>(_onRecipeDelete);
   }
 
   // Load all recipes from local db
   void _onRecipeGetAll(RecipeGetAll event, Emitter<RecipeState> emit) async {
-    List<Recipe> results = await getAllRecipes(event.code);
-    emit(RecipeGetAllSuccess(recipes: results));
-  }
-
-  Future<List<Recipe>> getAllRecipes(RecipeTypeCode code) async {
     List<Map> dbRecipes = await recipeDatabase.getAll(
       Constants.tableRecipe,
       whereClause: '${Constants.colRecipeCode}=?',
-      whereArgs: [codeEnumToString(code)],
+      whereArgs: [codeEnumToString(event.code)],
     );
 
     List<Recipe> results = [];
@@ -42,11 +38,11 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
       results.add(Recipe.fromDB(recipe));
     }
 
-    return results;
+    emit(RecipeGetAllSuccess(recipes: results));
   }
 
+  // Retrieve recipe types from SP for filter
   void _onRecipeTypeGetAll(RecipeTypeGetAll event, Emitter<RecipeState> emit) async {
-    // Retrieve recipe types from SP for filter
     final SharedPreferences spInstance = await SharedPreferences.getInstance();
     String? typesString = spInstance.getString('recipeTypes');
 
@@ -61,5 +57,16 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
     }
 
     emit(RecipeTypeGetAllSuccess(types: types));
+  }
+
+  // Delete recipe by recipeId
+  void _onRecipeDelete(RecipeDelete event, Emitter<RecipeState> emit) async {
+    await recipeDatabase.delete(
+      Constants.tableRecipe,
+      whereClause: '${Constants.colRecipeId}=?',
+      whereArgs: [event.recipeId],
+    );
+
+    emit(RecipeDeleteSuccess());
   }
 }
