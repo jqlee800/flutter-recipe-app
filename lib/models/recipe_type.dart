@@ -12,7 +12,7 @@ class RecipeType {
 
   RecipeType.fromJson(Map<String, dynamic> json)
       : name = json['name'],
-        code = json['code'],
+        code = codeStringToEnum(json['code']),
         description = json['description'];
 
   Map<String, dynamic> toJson() {
@@ -22,6 +22,11 @@ class RecipeType {
       'description': description,
     };
   }
+
+  RecipeType.fromSP(Map<dynamic, dynamic> json)
+      : name = json['name'],
+        code = codeStringToEnum(json['code']),
+        description = json['description'];
 }
 
 enum RecipeTypeCode {
