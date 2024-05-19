@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+// Models
+import 'package:flutter_recipe_app/models/recipe_type.dart';
+
 @immutable
 abstract class RecipeEvent {}
 
@@ -8,5 +11,8 @@ class RecipeTypeGetAll extends RecipeEvent {
 }
 
 class RecipeGetAll extends RecipeEvent {
-  RecipeGetAll();
+  final RecipeTypeCode code;
+  RecipeGetAll({
+    required this.code,
+  });
 }

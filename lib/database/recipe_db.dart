@@ -1,15 +1,20 @@
-import 'package:flutter_recipe_app/models/recipe.dart';
-import 'package:flutter_recipe_app/models/recipe_type.dart';
 import 'package:sqflite/sqflite.dart';
 
+// Models
 import 'package:flutter_recipe_app/models/constants.dart';
+import 'package:flutter_recipe_app/models/recipe.dart';
+import 'package:flutter_recipe_app/models/recipe_type.dart';
 
 class RecipeDatabase {
   late Database database;
 
-  Future<List<Map>> getAll(String table) async {
+  Future<List<Map>> getAll(String table, {String? whereClause, List<Object>? whereArgs}) async {
     await openRecipeDb();
-    List<Map> maps = await database.query(table);
+    List<Map> maps = await database.query(
+      table,
+      where: whereClause,
+      whereArgs: whereArgs,
+    );
     await closeRecipeDb();
     return maps;
   }

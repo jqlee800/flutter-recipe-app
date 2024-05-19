@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     context.read<RecipeBloc>().add(RecipeTypeGetAll());
-    context.read<RecipeBloc>().add(RecipeGetAll());
+    context.read<RecipeBloc>().add(RecipeGetAll(code: RecipeTypeCode.APTZ));
   }
 
   @override
@@ -71,10 +71,11 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 4.0),
-                child: _buildRecipeTypePicker(),
-              ),
+              if (_recipeTypes.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 4.0),
+                  child: _buildRecipeTypePicker(),
+                ),
               Expanded(
                 child: ListView.builder(
                     itemCount: _recipes.length,
@@ -186,6 +187,12 @@ class _HomeScreenState extends State<HomeScreen> {
             onSelectedItemChanged: (int selectedItem) {
               setState(() {
                 _selectedType = selectedItem;
+
+                context.read<RecipeBloc>().add(
+                      RecipeGetAll(
+                        code: _recipeTypes[_selectedType].code,
+                      ),
+                    );
               });
             },
             children: List<Widget>.generate(_recipeTypes.length, (int index) {

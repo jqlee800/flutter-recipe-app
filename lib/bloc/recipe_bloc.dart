@@ -25,12 +25,16 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
 
   // Load all recipes from local db
   void _onRecipeGetAll(RecipeGetAll event, Emitter<RecipeState> emit) async {
-    List<Recipe> results = await getAllRecipes();
+    List<Recipe> results = await getAllRecipes(event.code);
     emit(RecipeGetAllSuccess(recipes: results));
   }
 
-  Future<List<Recipe>> getAllRecipes() async {
-    List<Map> dbRecipes = await recipeDatabase.getAll(Constants.tableRecipe);
+  Future<List<Recipe>> getAllRecipes(RecipeTypeCode code) async {
+    List<Map> dbRecipes = await recipeDatabase.getAll(
+      Constants.tableRecipe,
+      whereClause: '${Constants.colRecipeCode}=?',
+      whereArgs: [codeEnumToString(code)],
+    );
 
     List<Recipe> results = [];
 
