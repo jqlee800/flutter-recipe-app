@@ -186,6 +186,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
                               padding: const EdgeInsets.only(top: 8.0),
                               child: Row(
                                 children: [
+                                  if (_ingredients.isEmpty) const Text('No ingredients specifed.'),
                                   for (RecipeIngredient ingredient in _ingredients)
                                     Container(
                                       margin: const EdgeInsets.only(right: 8.0),
@@ -229,6 +230,8 @@ class _RecipeScreenState extends State<RecipeScreen> {
                                 ),
                               ),
                             ),
+
+                            if (_steps.isEmpty) const Text('No instructions specifed.'),
 
                             for (RecipeStep step in _steps)
                               Container(
