@@ -64,6 +64,14 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
 
   // Get recipe details by recipeId
   void _onRecipeGetDetails(RecipeGetDetails event, Emitter<RecipeState> emit) async {
+    Map? dbRecipe = await recipeDatabase.getOne(
+      Constants.tableRecipe,
+      whereClause: '${Constants.colRecipeId}=?',
+      whereArgs: [event.recipeId],
+    );
+
+    Recipe recipe = Recipe.fromDB(dbRecipe!);
+
     List<Map> dbIngredients = await recipeDatabase.getAll(
       Constants.tableIngredient,
       whereClause: '${Constants.colIngredientRecipeId}=?',
@@ -89,6 +97,7 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
     }
 
     emit(RecipeGetDetailsSuccess(
+      recipe: recipe,
       ingredients: ingredients,
       steps: steps,
     ));

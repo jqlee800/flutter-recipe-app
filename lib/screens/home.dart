@@ -130,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
           MaterialPageRoute(
             builder: (context) => BlocProvider(
               create: (BuildContext context) => RecipeBloc(),
-              child: RecipeScreen(recipe: recipe),
+              child: RecipeScreen(recipeId: recipe.recipeId!),
             ),
           ),
         );

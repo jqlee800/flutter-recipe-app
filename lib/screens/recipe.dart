@@ -17,10 +17,10 @@ import 'package:flutter_recipe_app/models/recipe_type.dart';
 import 'package:flutter_recipe_app/screens/edit.dart';
 
 class RecipeScreen extends StatefulWidget {
-  final Recipe recipe;
+  final int recipeId;
 
   const RecipeScreen({
-    required this.recipe,
+    required this.recipeId,
     super.key,
   });
 
@@ -29,6 +29,7 @@ class RecipeScreen extends StatefulWidget {
 }
 
 class _RecipeScreenState extends State<RecipeScreen> {
+  Recipe? _recipe;
   List<RecipeIngredient> _ingredients = [];
   List<RecipeStep> _steps = [];
 
@@ -39,7 +40,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
     // Load ingredients and instructions from local db
     context.read<RecipeBloc>().add(
           RecipeGetDetails(
-            recipeId: widget.recipe.recipeId!,
+            recipeId: widget.recipeId,
           ),
         );
   }
@@ -72,7 +73,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
                 MaterialPageRoute(
                   builder: (context) => BlocProvider(
                     create: (BuildContext context) => RecipeBloc(),
-                    child: EditScreen(recipe: widget.recipe),
+                    child: EditScreen(recipe: _recipe),
                   ),
                 ),
               );
@@ -87,153 +88,165 @@ class _RecipeScreenState extends State<RecipeScreen> {
           listener: (BuildContext context, RecipeState state) async {
             if (state is RecipeGetDetailsSuccess) {
               setState(() {
+                _recipe = state.recipe;
                 _ingredients = state.ingredients;
                 _steps = state.steps;
               });
             }
           },
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // ------------------------ RECIPE GENERAL INFO -------------------------
-                widget.recipe.image != null
-                    ? ClipRRect(
-                        borderRadius: BorderRadius.circular(10.0),
-                        child: Image.network(
-                          widget.recipe.image!,
-                          height: 200,
-                          width: MediaQuery.of(context).size.width,
-                          fit: BoxFit.cover,
-                        ),
-                      )
-                    : Container(
-                        color: Colors.yellow,
-                        height: 20,
-                      ),
-                Padding(
-                  padding: const EdgeInsets.all(8),
+          child: _recipe == null
+              ? SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  child: const Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Loading...'),
+                    ],
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.all(10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        widget.recipe.name,
-                        style: const TextStyle(
-                          fontSize: 24,
-                          color: Constants.primaryColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      if (widget.recipe.description != null)
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Text(widget.recipe.description!),
-                        ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8.0,
-                          vertical: 1.0,
-                        ),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                            border: Border.all(
-                              color: Constants.secondaryColor,
-                            )),
-                        child: Text(
-                          enumToDisplayName(widget.recipe.code),
-                          style: const TextStyle(
-                            color: Constants.secondaryColor,
-                          ),
-                        ),
-                      ),
-
-                      const Padding(
-                        padding: EdgeInsets.only(top: 12.0),
-                        child: Divider(),
-                      ),
-
-                      // ----------------- INGREDIENTS ----------------
-                      const Text(
-                        'Ingredients',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-
+                      // ------------------------ RECIPE GENERAL INFO -------------------------
+                      _recipe!.image != null
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: Image.network(
+                                _recipe!.image!,
+                                height: 200,
+                                width: MediaQuery.of(context).size.width,
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                          : Container(
+                              color: Colors.yellow,
+                              height: 20,
+                            ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: Row(
+                        padding: const EdgeInsets.all(8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            for (RecipeIngredient ingredient in _ingredients)
-                              Container(
-                                margin: const EdgeInsets.only(right: 8.0),
-                                child: Column(
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      child: Image.network(
-                                        ingredient.image,
-                                        height: 60,
-                                        width: 60,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 4.0),
-                                      child: Text(
-                                        ingredient.name,
-                                        style: const TextStyle(fontSize: 12),
+                            Text(
+                              _recipe!.name,
+                              style: const TextStyle(
+                                fontSize: 24,
+                                color: Constants.primaryColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            if (_recipe!.description != null)
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 8.0),
+                                child: Text(_recipe!.description!),
+                              ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0,
+                                vertical: 1.0,
+                              ),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                  border: Border.all(
+                                    color: Constants.secondaryColor,
+                                  )),
+                              child: Text(
+                                enumToDisplayName(_recipe!.code),
+                                style: const TextStyle(
+                                  color: Constants.secondaryColor,
+                                ),
+                              ),
+                            ),
+
+                            const Padding(
+                              padding: EdgeInsets.only(top: 12.0),
+                              child: Divider(),
+                            ),
+
+                            // ----------------- INGREDIENTS ----------------
+                            const Text(
+                              'Ingredients',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Row(
+                                children: [
+                                  for (RecipeIngredient ingredient in _ingredients)
+                                    Container(
+                                      margin: const EdgeInsets.only(right: 8.0),
+                                      child: Column(
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.circular(5.0),
+                                            child: Image.network(
+                                              ingredient.image,
+                                              height: 60,
+                                              width: 60,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(top: 4.0),
+                                            child: Text(
+                                              ingredient.name,
+                                              style: const TextStyle(fontSize: 12),
+                                            ),
+                                          )
+                                        ],
                                       ),
                                     )
+                                ],
+                              ),
+                            ),
+
+                            const Padding(
+                              padding: EdgeInsets.only(top: 12.0),
+                              child: Divider(),
+                            ),
+
+                            // ----------------- STEPS ----------------
+                            const Padding(
+                              padding: EdgeInsets.only(bottom: 4.0),
+                              child: Text(
+                                'Instructions',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+
+                            for (RecipeStep step in _steps)
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.grey.shade100,
+                                ),
+                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                margin: const EdgeInsets.only(bottom: 8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      step.name,
+                                      style:
+                                          const TextStyle(color: Constants.secondaryColor, fontWeight: FontWeight.bold),
+                                    ),
+                                    if (step.description != null) Text(step.description!),
                                   ],
                                 ),
                               )
                           ],
                         ),
-                      ),
-
-                      const Padding(
-                        padding: EdgeInsets.only(top: 12.0),
-                        child: Divider(),
-                      ),
-
-                      // ----------------- STEPS ----------------
-                      const Padding(
-                        padding: EdgeInsets.only(bottom: 4.0),
-                        child: Text(
-                          'Instructions',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-
-                      for (RecipeStep step in _steps)
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Colors.grey.shade100,
-                          ),
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                          margin: const EdgeInsets.only(bottom: 8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                step.name,
-                                style: const TextStyle(color: Constants.secondaryColor, fontWeight: FontWeight.bold),
-                              ),
-                              if (step.description != null) Text(step.description!),
-                            ],
-                          ),
-                        )
+                      )
                     ],
                   ),
-                )
-              ],
-            ),
-          ),
+                ),
         )),
       ),
     );

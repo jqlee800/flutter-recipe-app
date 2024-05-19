@@ -21,10 +21,12 @@ class RecipeTypeGetAllSuccess extends RecipeState {
 }
 
 class RecipeGetDetailsSuccess extends RecipeState {
+  Recipe recipe;
   List<RecipeIngredient> ingredients;
   List<RecipeStep> steps;
 
   RecipeGetDetailsSuccess({
+    required this.recipe,
     this.ingredients = const [],
     this.steps = const [],
   });
