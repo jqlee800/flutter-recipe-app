@@ -1,5 +1,3 @@
-import 'package:flutter_recipe_app/models/recipe_ingredient.dart';
-import 'package:flutter_recipe_app/models/recipe_step.dart';
 import 'package:flutter_recipe_app/models/recipe_type.dart';
 
 class Recipe {
@@ -8,8 +6,6 @@ class Recipe {
   final RecipeTypeCode code;
   final String? description;
   final String? image;
-  final List<RecipeStep>? steps;
-  final List<RecipeIngredient>? ingredients;
 
   const Recipe(
     this.recipeId,
@@ -17,8 +13,6 @@ class Recipe {
     this.code,
     this.description,
     this.image,
-    this.steps,
-    this.ingredients,
   );
 
   Recipe.fromJson(Map<String, dynamic> json)
@@ -26,9 +20,7 @@ class Recipe {
         name = json['name'],
         code = json['code'],
         description = json['description'],
-        image = json['image'],
-        steps = json['steps'],
-        ingredients = json['ingredients'];
+        image = json['image'];
 
   Map<String, dynamic> toJson() {
     return {
@@ -37,18 +29,6 @@ class Recipe {
       'code': codeEnumToString(code),
       'description': description,
       'image': image,
-      'steps': steps,
-      'ingredients': ingredients,
-    };
-  }
-
-  Map<String, dynamic> toDB() {
-    return {
-      'recipeId': recipeId,
-      'name': name,
-      'code': codeEnumToString(code),
-      'description': description,
-      'image': image
     };
   }
 
@@ -57,7 +37,5 @@ class Recipe {
         name = map['name'],
         code = codeStringToEnum(map['code']),
         description = map['description'],
-        image = map['image'],
-        steps = [],
-        ingredients = [];
+        image = map['image'];
 }

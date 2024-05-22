@@ -94,14 +94,12 @@ class RecipeDatabase {
       int recipeId1 = await database.insert(
         Constants.tableRecipe,
         const Recipe(
-                null,
-                'Signature Fish & Chips',
-                RecipeTypeCode.MAIN,
-                'Crispy Batter, Juicy Meat, with sides of Russet Potato Fries and of course with our house special Tartar Sauce as dips.',
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEEBhozoDyr2udvXeOwhgsagXNyVKRMRX7TDk8FJKZ3A&s',
-                null,
-                null)
-            .toDB(),
+          null,
+          'Signature Fish & Chips',
+          RecipeTypeCode.MAIN,
+          'Crispy Batter, Juicy Meat, with sides of Russet Potato Fries and of course with our house special Tartar Sauce as dips.',
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEEBhozoDyr2udvXeOwhgsagXNyVKRMRX7TDk8FJKZ3A&s',
+        ).toJson(),
       );
 
       await database.insert(
@@ -183,14 +181,12 @@ class RecipeDatabase {
       int recipeId2 = await database.insert(
         Constants.tableRecipe,
         const Recipe(
-                null,
-                'Bruschetta',
-                RecipeTypeCode.APTZ,
-                'Grilled bread rubbed with garlic and topped with fresh tomatoes, basil, and olive oil.',
-                'https://richanddelish.com/wp-content/uploads/2023/01/Bruschetta-recipe-with-mozzarella-2.jpg',
-                null,
-                null)
-            .toDB(),
+          null,
+          'Bruschetta',
+          RecipeTypeCode.APTZ,
+          'Grilled bread rubbed with garlic and topped with fresh tomatoes, basil, and olive oil.',
+          'https://richanddelish.com/wp-content/uploads/2023/01/Bruschetta-recipe-with-mozzarella-2.jpg',
+        ).toJson(),
       );
 
       await database.insert(
@@ -277,9 +273,7 @@ class RecipeDatabase {
           RecipeTypeCode.DSRT,
           'A rich and decadent chocolate cake with a molten chocolate center.',
           'https://www.unicornsinthekitchen.com/wp-content/uploads/2016/02/Molten-chocolate-lava-cake-1-700px.jpg',
-          null,
-          null,
-        ).toDB(),
+        ).toJson(),
       );
 
       await database.insert(
@@ -369,9 +363,7 @@ class RecipeDatabase {
           RecipeTypeCode.SLDS,
           'Crisp romaine lettuce, croutons, and Parmesan cheese tossed with a creamy Caesar dressing.',
           'https://www.recipetineats.com/wp-content/uploads/2016/05/Caesar-Salad_7.jpg',
-          null,
-          null,
-        ).toDB(),
+        ).toJson(),
       );
 
       await database.insert(
@@ -453,9 +445,7 @@ class RecipeDatabase {
           RecipeTypeCode.BVRG,
           'A refreshing cocktail made with white rum, sugar, lime juice, soda water, and mint.',
           'https://cdn.loveandlemons.com/wp-content/uploads/2020/07/mojito.jpg',
-          null,
-          null,
-        ).toDB(),
+        ).toJson(),
       );
 
       await database.insert(

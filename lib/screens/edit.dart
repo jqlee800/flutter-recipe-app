@@ -9,13 +9,19 @@ import 'package:flutter_recipe_app/bloc/recipe_state.dart';
 // Models
 import 'package:flutter_recipe_app/models/constants.dart';
 import 'package:flutter_recipe_app/models/recipe.dart';
+import 'package:flutter_recipe_app/models/recipe_ingredient.dart';
+import 'package:flutter_recipe_app/models/recipe_step.dart';
 import 'package:flutter_recipe_app/models/recipe_type.dart';
 
 class EditScreen extends StatefulWidget {
   final Recipe? recipe;
+  final List<RecipeIngredient>? ingredients;
+  final List<RecipeStep>? steps;
 
   const EditScreen({
     this.recipe,
+    this.ingredients = const [],
+    this.steps = const [],
     super.key,
   });
 
@@ -151,7 +157,35 @@ class _EditScreenState extends State<EditScreen> {
                 ),
 
                 // --------------------- RECIPE TYPE ---------------------
-                _buildRecipeTypeDropdown(),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20.0),
+                  child: _buildRecipeTypeDropdown(),
+                ),
+
+                // --------------------- INGREDIENTS ---------------------
+                Text(
+                  'Ingredients',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey.shade700,
+                  ),
+                ),
+
+                Text(widget.ingredients.toString()),
+
+                // --------------------- STEPS ---------------------
+                Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: Text(
+                    'Instructions',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey.shade700,
+                    ),
+                  ),
+                ),
+
+                Text(widget.steps.toString()),
               ],
             ),
           ),
@@ -212,8 +246,6 @@ class _EditScreenState extends State<EditScreen> {
       codeStringToEnum(_selectedRecipeType),
       descriptionController.text,
       imageController.text,
-      null,
-      null,
     );
   }
 }

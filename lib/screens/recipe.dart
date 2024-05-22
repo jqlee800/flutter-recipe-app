@@ -76,7 +76,11 @@ class _RecipeScreenState extends State<RecipeScreen> {
                 MaterialPageRoute(
                   builder: (context) => BlocProvider(
                     create: (BuildContext context) => RecipeBloc(),
-                    child: EditScreen(recipe: _recipe),
+                    child: EditScreen(
+                      recipe: _recipe,
+                      ingredients: _ingredients,
+                      steps: _steps,
+                    ),
                   ),
                 ),
               );

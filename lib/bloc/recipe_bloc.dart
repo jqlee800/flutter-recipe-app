@@ -108,7 +108,7 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
   void _onRecipeCreate(RecipeCreate event, Emitter<RecipeState> emit) async {
     await recipeDatabase.insert(
       Constants.tableRecipe,
-      body: event.recipe.toDB(),
+      body: event.recipe.toJson(),
     );
 
     emit(RecipeCreateSuccess());
@@ -120,7 +120,7 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
       Constants.tableRecipe,
       whereClause: '${Constants.colRecipeId}=?',
       whereArgs: [event.recipe.recipeId!],
-      body: event.recipe.toDB(),
+      body: event.recipe.toJson(),
     );
 
     emit(RecipeUpdateSuccess());
