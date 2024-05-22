@@ -12,6 +12,7 @@ import 'package:flutter_recipe_app/models/recipe.dart';
 import 'package:flutter_recipe_app/models/recipe_ingredient.dart';
 import 'package:flutter_recipe_app/models/recipe_step.dart';
 import 'package:flutter_recipe_app/models/recipe_type.dart';
+import 'package:flutter_recipe_app/screens/subitem.dart';
 
 class EditScreen extends StatefulWidget {
   final Recipe? recipe;
@@ -65,6 +66,8 @@ class _EditScreenState extends State<EditScreen> {
   void dispose() {
     // Clean up the controller when the widget is disposed.
     nameController.dispose();
+    descriptionController.dispose();
+    imageController.dispose();
     super.dispose();
   }
 
@@ -273,6 +276,7 @@ class _EditScreenState extends State<EditScreen> {
                           ),
                           child: const Icon(
                             Icons.image,
+                            size: 15,
                             color: Constants.primaryColor,
                           ),
                         )
@@ -307,7 +311,26 @@ class _EditScreenState extends State<EditScreen> {
             ),
           ),
         TextButton.icon(
-          onPressed: null,
+          onPressed: () async {
+            // Navigate to add ingredient/step screen
+            RecipeIngredient? newIngredient = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BlocProvider(
+                  create: (BuildContext context) => RecipeBloc(),
+                  child: SubitemScreen(
+                    recipeId: widget.recipe?.recipeId,
+                  ),
+                ),
+              ),
+            );
+
+            if (newIngredient != null) {
+              setState(() {
+                _recipeIngredients.add(newIngredient);
+              });
+            }
+          },
           icon: const Icon(
             Icons.add,
             color: Constants.primaryColor,
@@ -364,7 +387,27 @@ class _EditScreenState extends State<EditScreen> {
             ),
           ),
         TextButton.icon(
-          onPressed: null,
+          onPressed: () async {
+            // Navigate to add ingredient/step screen
+            RecipeStep? newStep = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BlocProvider(
+                  create: (BuildContext context) => RecipeBloc(),
+                  child: SubitemScreen(
+                    recipeId: widget.recipe?.recipeId,
+                    isStep: true,
+                  ),
+                ),
+              ),
+            );
+
+            if (newStep != null) {
+              setState(() {
+                _recipeSteps.add(newStep);
+              });
+            }
+          },
           icon: const Icon(
             Icons.add,
             color: Constants.primaryColor,
