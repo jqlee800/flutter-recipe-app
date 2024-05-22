@@ -28,16 +28,24 @@ class _EditScreenState extends State<EditScreen> {
   final descriptionController = TextEditingController();
   final imageController = TextEditingController();
 
+  List<RecipeType> _recipeTypes = [];
+  String _selectedRecipeType = codeEnumToString(RecipeTypeCode.APTZ);
+
   late bool _isCreate;
 
   @override
   void initState() {
     _isCreate = widget.recipe == null;
 
+    // Fetch recipe type from SP for selection
+    context.read<RecipeBloc>().add(RecipeTypeGetAll());
+
+    // If editing a existing recipe, pre-populate the text fields
     if (!_isCreate) {
       nameController.text = widget.recipe!.name;
       descriptionController.text = widget.recipe!.description ?? '';
       imageController.text = widget.recipe!.image ?? '';
+      _selectedRecipeType = codeEnumToString(widget.recipe!.code);
     }
 
     super.initState();
@@ -85,51 +93,113 @@ class _EditScreenState extends State<EditScreen> {
           if (state is RecipeUpdateSuccess || state is RecipeCreateSuccess) {
             Navigator.pop(context, _getUpdatedRecipe());
           }
+
+          if (state is RecipeTypeGetAllSuccess) {
+            setState(() {
+              // Remove 'ALL' from list
+              _recipeTypes = state.types.sublist(1, state.types.length);
+            });
+          }
         },
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: 8.0,
-            horizontal: 16,
-          ),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 16.0),
-                child: TextFormField(
-                  controller: nameController,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 8.0,
+              horizontal: 16,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // --------------------- TITLE ---------------------
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: TextFormField(
+                    controller: nameController,
+                    maxLines: null,
+                    keyboardType: TextInputType.multiline,
+                    decoration: const InputDecoration(
+                      border: UnderlineInputBorder(),
+                      labelText: 'Title',
+                    ),
+                    autofocus: true,
+                  ),
+                ),
+
+                // --------------------- DESCRIPTION ---------------------
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: TextFormField(
+                    controller: descriptionController,
+                    maxLines: null,
+                    keyboardType: TextInputType.multiline,
+                    decoration: const InputDecoration(
+                      border: UnderlineInputBorder(),
+                      labelText: 'Description',
+                    ),
+                  ),
+                ),
+
+                // --------------------- IMAGE LINK ---------------------
+                TextFormField(
+                  controller: imageController,
                   maxLines: null,
                   keyboardType: TextInputType.multiline,
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
-                    labelText: 'Recipe Name',
-                  ),
-                  autofocus: true,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 16.0),
-                child: TextFormField(
-                  controller: descriptionController,
-                  maxLines: null,
-                  keyboardType: TextInputType.multiline,
-                  decoration: const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    labelText: 'Description',
+                    labelText: 'Paste image link',
                   ),
                 ),
-              ),
-              TextFormField(
-                controller: imageController,
-                maxLines: null,
-                keyboardType: TextInputType.multiline,
-                decoration: const InputDecoration(
-                  border: UnderlineInputBorder(),
-                  labelText: 'Paste image link',
-                ),
-              ),
-            ],
+
+                // --------------------- RECIPE TYPE ---------------------
+                _buildRecipeTypeDropdown(),
+              ],
+            ),
           ),
         ),
+      ),
+    );
+  }
+
+  // ----------------- WIDGETS -------------------
+  Widget _buildRecipeTypeDropdown() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 28.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Recipe Type',
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.grey.shade700,
+            ),
+          ),
+          DropdownButton<String>(
+            value: _selectedRecipeType,
+            // icon: const Icon(Icons.arrow_downward),
+            elevation: 16,
+            style: TextStyle(
+              fontWeight: FontWeight.normal,
+              color: Theme.of(context).colorScheme.onBackground,
+            ),
+            underline: Container(
+              height: 2,
+              color: Constants.primaryColor,
+            ),
+            onChanged: (String? value) {
+              // This is called when the user selects an item.
+              setState(() {
+                _selectedRecipeType = value!;
+              });
+            },
+            items: _recipeTypes.map<DropdownMenuItem<String>>((RecipeType recipeType) {
+              return DropdownMenuItem<String>(
+                value: codeEnumToString(recipeType.code),
+                child: Text(enumToDisplayName(recipeType.code)),
+              );
+            }).toList(),
+          ),
+        ],
       ),
     );
   }
@@ -139,8 +209,7 @@ class _EditScreenState extends State<EditScreen> {
     return Recipe(
       widget.recipe?.recipeId,
       nameController.text,
-      // TODO!! remove hard coded main course
-      widget.recipe != null ? widget.recipe!.code : RecipeTypeCode.MAIN,
+      codeStringToEnum(_selectedRecipeType),
       descriptionController.text,
       imageController.text,
       null,
