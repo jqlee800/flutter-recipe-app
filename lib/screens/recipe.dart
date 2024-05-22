@@ -123,7 +123,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // ------------------------ RECIPE GENERAL INFO -------------------------
-                      _recipe!.image != null && _recipe!.image?.trim() != ''
+                      _recipe!.image != null && _recipe!.image!.trim().isNotEmpty
                           ? ClipRRect(
                               borderRadius: BorderRadius.circular(10.0),
                               child: Image.network(
@@ -152,11 +152,11 @@ class _RecipeScreenState extends State<RecipeScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              _recipe!.name == '' ? 'No title specified' : _recipe!.name,
+                              _recipe!.name.isEmpty ? 'No title specified' : _recipe!.name,
                               style: TextStyle(
                                 fontSize: 24,
-                                color: _recipe!.name == '' ? Colors.grey.shade400 : Constants.primaryColor,
-                                fontWeight: _recipe!.name == '' ? FontWeight.normal : FontWeight.bold,
+                                color: _recipe!.name.isEmpty ? Colors.grey.shade400 : Constants.primaryColor,
+                                fontWeight: _recipe!.name.isEmpty ? FontWeight.normal : FontWeight.bold,
                               ),
                             ),
                             if (_recipe!.description != null)

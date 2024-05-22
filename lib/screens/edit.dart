@@ -261,15 +261,29 @@ class _EditScreenState extends State<EditScreen> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(right: 8),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(5.0),
-                    child: Image.network(
-                      ingredient.image,
-                      height: 40.0,
-                      width: 40.0,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                  child: ingredient.image.isEmpty
+                      ? Container(
+                          padding: const EdgeInsets.all(4),
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Colors.indigo.shade100,
+                          ),
+                          child: const Icon(
+                            Icons.image,
+                            color: Constants.primaryColor,
+                          ),
+                        )
+                      : ClipRRect(
+                          borderRadius: BorderRadius.circular(5.0),
+                          child: Image.network(
+                            ingredient.image,
+                            height: 40.0,
+                            width: 40.0,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                 ),
                 Expanded(
                   child: Column(
