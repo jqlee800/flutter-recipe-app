@@ -52,6 +52,18 @@ class RecipeDatabase {
     return deletedId;
   }
 
+  Future<void> insertAll(String table, {List<Map<String, dynamic>> body = const []}) async {
+    await openRecipeDb();
+    Batch batch = database.batch();
+
+    for (var element in body) {
+      batch.insert(table, element);
+    }
+
+    await batch.commit();
+    await closeRecipeDb();
+  }
+
   Future openRecipeDb() async {
     database = await openDatabase('recipe.db', version: 1, onCreate: (Database db, int version) async {
       await db.execute('''

@@ -205,15 +205,29 @@ class _RecipeScreenState extends State<RecipeScreen> {
                                       margin: const EdgeInsets.only(right: 8.0),
                                       child: Column(
                                         children: [
-                                          ClipRRect(
-                                            borderRadius: BorderRadius.circular(5.0),
-                                            child: Image.network(
-                                              ingredient.image,
-                                              height: 60,
-                                              width: 60,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
+                                          ingredient.image.isEmpty
+                                              ? Container(
+                                                  padding: const EdgeInsets.all(4),
+                                                  width: 60,
+                                                  height: 60,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(5),
+                                                    color: Colors.indigo.shade100,
+                                                  ),
+                                                  child: const Icon(
+                                                    Icons.image,
+                                                    color: Constants.primaryColor,
+                                                  ),
+                                                )
+                                              : ClipRRect(
+                                                  borderRadius: BorderRadius.circular(5.0),
+                                                  child: Image.network(
+                                                    ingredient.image,
+                                                    height: 60,
+                                                    width: 60,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
                                           Padding(
                                             padding: const EdgeInsets.only(top: 4.0),
                                             child: Text(

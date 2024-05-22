@@ -95,7 +95,11 @@ class _EditScreenState extends State<EditScreen> {
                     );
               } else {
                 context.read<RecipeBloc>().add(
-                      RecipeUpdate(recipe: _getUpdatedRecipe()),
+                      RecipeUpdate(
+                        recipe: _getUpdatedRecipe(),
+                        ingredients: _recipeIngredients,
+                        steps: _recipeSteps,
+                      ),
                     );
               }
             },

@@ -106,9 +106,23 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
 
   // Add a new recipe
   void _onRecipeCreate(RecipeCreate event, Emitter<RecipeState> emit) async {
-    await recipeDatabase.insert(
+    int newRecipeId = await recipeDatabase.insert(
       Constants.tableRecipe,
       body: event.recipe.toJson(),
+    );
+
+    List<Map<String, dynamic>> ingredientsDB = event.ingredients.map((e) => e.toDB()).toList();
+
+    await recipeDatabase.insertAll(
+      Constants.tableIngredient,
+      body: ingredientsDB,
+    );
+
+    List<Map<String, dynamic>> stepsDB = event.steps.map((e) => e.toJson()).toList();
+
+    await recipeDatabase.insertAll(
+      Constants.tableStep,
+      body: stepsDB,
     );
 
     emit(RecipeCreateSuccess());
@@ -121,6 +135,20 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
       whereClause: '${Constants.colRecipeId}=?',
       whereArgs: [event.recipe.recipeId!],
       body: event.recipe.toJson(),
+    );
+
+    List<Map<String, dynamic>> ingredientsDB = event.ingredients.map((e) => e.toDB()).toList();
+
+    await recipeDatabase.insertAll(
+      Constants.tableIngredient,
+      body: ingredientsDB,
+    );
+
+    List<Map<String, dynamic>> stepsDB = event.steps.map((e) => e.toJson()).toList();
+
+    await recipeDatabase.insertAll(
+      Constants.tableStep,
+      body: stepsDB,
     );
 
     emit(RecipeUpdateSuccess());
