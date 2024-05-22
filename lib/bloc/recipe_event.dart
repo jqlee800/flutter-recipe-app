@@ -27,6 +27,14 @@ class RecipeGetDetails extends RecipeEvent {
   });
 }
 
+class RecipeCreate extends RecipeEvent {
+  final Recipe recipe;
+
+  RecipeCreate({
+    required this.recipe,
+  });
+}
+
 class RecipeUpdate extends RecipeEvent {
   final Recipe recipe;
 

@@ -24,6 +24,7 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
     on<RecipeGetAll>(_onRecipeGetAll);
     on<RecipeGetDetails>(_onRecipeGetDetails);
     on<RecipeUpdate>(_onRecipeUpdate);
+    on<RecipeCreate>(_onRecipeCreate);
     on<RecipeDelete>(_onRecipeDelete);
   }
 
@@ -101,6 +102,16 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
       ingredients: ingredients,
       steps: steps,
     ));
+  }
+
+  // Add a new recipe
+  void _onRecipeCreate(RecipeCreate event, Emitter<RecipeState> emit) async {
+    await recipeDatabase.insert(
+      Constants.tableRecipe,
+      body: event.recipe.toDB(),
+    );
+
+    emit(RecipeCreateSuccess());
   }
 
   // Update recipe information

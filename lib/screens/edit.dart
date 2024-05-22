@@ -9,6 +9,7 @@ import 'package:flutter_recipe_app/bloc/recipe_state.dart';
 // Models
 import 'package:flutter_recipe_app/models/constants.dart';
 import 'package:flutter_recipe_app/models/recipe.dart';
+import 'package:flutter_recipe_app/models/recipe_type.dart';
 
 class EditScreen extends StatefulWidget {
   final Recipe? recipe;
@@ -27,9 +28,13 @@ class _EditScreenState extends State<EditScreen> {
   final descriptionController = TextEditingController();
   final imageController = TextEditingController();
 
+  late bool _isCreate;
+
   @override
   void initState() {
-    if (widget.recipe != null) {
+    _isCreate = widget.recipe == null;
+
+    if (!_isCreate) {
       nameController.text = widget.recipe!.name;
       descriptionController.text = widget.recipe!.description ?? '';
       imageController.text = widget.recipe!.image ?? '';
@@ -54,24 +59,30 @@ class _EditScreenState extends State<EditScreen> {
           color: Colors.white,
         ),
         title: Text(
-          widget.recipe == null ? 'Create Recipe' : 'Edit Recipe',
+          _isCreate ? 'Create Recipe' : 'Edit Recipe',
           style: const TextStyle(color: Colors.white),
         ),
         actions: [
           IconButton(
             icon: const Icon(Icons.save_rounded),
-            tooltip: 'Save',
+            tooltip: _isCreate ? 'Add' : 'Save',
             onPressed: () {
-              context.read<RecipeBloc>().add(
-                    RecipeUpdate(recipe: _getUpdatedRecipe()),
-                  );
+              if (_isCreate) {
+                context.read<RecipeBloc>().add(
+                      RecipeCreate(recipe: _getUpdatedRecipe()),
+                    );
+              } else {
+                context.read<RecipeBloc>().add(
+                      RecipeUpdate(recipe: _getUpdatedRecipe()),
+                    );
+              }
             },
           ),
         ],
       ),
       body: BlocListener<RecipeBloc, RecipeState>(
         listener: (BuildContext context, RecipeState state) async {
-          if (state is RecipeUpdateSuccess) {
+          if (state is RecipeUpdateSuccess || state is RecipeCreateSuccess) {
             Navigator.pop(context, _getUpdatedRecipe());
           }
         },
@@ -128,7 +139,8 @@ class _EditScreenState extends State<EditScreen> {
     return Recipe(
       widget.recipe?.recipeId,
       nameController.text,
-      widget.recipe!.code,
+      // TODO!! remove hard coded main course
+      widget.recipe != null ? widget.recipe!.code : RecipeTypeCode.MAIN,
       descriptionController.text,
       imageController.text,
       null,

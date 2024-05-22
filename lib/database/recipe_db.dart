@@ -26,6 +26,13 @@ class RecipeDatabase {
     return maps.isNotEmpty ? maps.first : null;
   }
 
+  Future<int> insert(String table, {Map<String, dynamic> body = const {}}) async {
+    await openRecipeDb();
+    int insertedId = await database.insert(table, body);
+    await closeRecipeDb();
+    return insertedId;
+  }
+
   Future<int> update(
     String table, {
     String? whereClause,
@@ -523,8 +530,4 @@ class RecipeDatabase {
       await closeRecipeDb();
     }
   }
-  // Future<Todo> insert(Todo todo) async {
-  //   todo.id = await db.insert(tableTodo, todo.toMap());
-  //   return todo;
-  // }
 }
