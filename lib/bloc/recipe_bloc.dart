@@ -147,14 +147,36 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
       body: event.recipe.toJson(),
     );
 
-    List<Map<String, dynamic>> ingredientsDB = event.ingredients.map((e) => e.toDB()).toList();
+    // Delete removed ingredients
+    List<int?> toDeleteIngredientIds = event.toRemoveIngredients.map((element) => element.ingredientId).toList();
+
+    await recipeDatabase.delete(
+      Constants.tableIngredient,
+      whereClause: '${Constants.colIngredientId}=?',
+      whereArgs: toDeleteIngredientIds.cast<Object>(),
+    );
+
+    // Delete removed steps
+    List<int?> toDeleteStepIds = event.toRemoveSteps.map((element) => element.stepId).toList();
+
+    await recipeDatabase.delete(
+      Constants.tableStep,
+      whereClause: '${Constants.colStepId}=?',
+      whereArgs: toDeleteStepIds.cast<Object>(),
+    );
+
+    // Only insert those records with a null primary key
+    // If primary has value that means DB already have this record, dont insert anymore
+    List<Map<String, dynamic>> ingredientsDB =
+        event.ingredients.where((element) => element.ingredientId == null).map((e) => e.toDB()).toList();
 
     await recipeDatabase.insertAll(
       Constants.tableIngredient,
       body: ingredientsDB,
     );
 
-    List<Map<String, dynamic>> stepsDB = event.steps.map((e) => e.toJson()).toList();
+    List<Map<String, dynamic>> stepsDB =
+        event.steps.where((element) => element.stepId == null).map((e) => e.toJson()).toList();
 
     await recipeDatabase.insertAll(
       Constants.tableStep,

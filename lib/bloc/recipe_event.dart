@@ -45,11 +45,15 @@ class RecipeUpdate extends RecipeEvent {
   final Recipe recipe;
   final List<RecipeIngredient> ingredients;
   final List<RecipeStep> steps;
+  final List<RecipeIngredient> toRemoveIngredients;
+  final List<RecipeStep> toRemoveSteps;
 
   RecipeUpdate({
     required this.recipe,
     this.ingredients = const [],
     this.steps = const [],
+    this.toRemoveIngredients = const [],
+    this.toRemoveSteps = const [],
   });
 }
 

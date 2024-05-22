@@ -38,6 +38,8 @@ class _EditScreenState extends State<EditScreen> {
   List<RecipeType> _recipeTypes = [];
   List<RecipeIngredient> _recipeIngredients = [];
   List<RecipeStep> _recipeSteps = [];
+  List<RecipeIngredient> _toRemoveIngredients = [];
+  List<RecipeStep> _toRemoveSteps = [];
   String _selectedRecipeType = codeEnumToString(RecipeTypeCode.APTZ);
 
   late bool _isCreate;
@@ -103,6 +105,8 @@ class _EditScreenState extends State<EditScreen> {
                         recipe: _getUpdatedRecipe(),
                         ingredients: _recipeIngredients,
                         steps: _recipeSteps,
+                        toRemoveIngredients: _toRemoveIngredients,
+                        toRemoveSteps: _toRemoveSteps,
                       ),
                     );
               }
@@ -314,6 +318,10 @@ class _EditScreenState extends State<EditScreen> {
                   iconSize: 20,
                   tooltip: 'Delete',
                   onPressed: () {
+                    if (!_isCreate && _recipeIngredients[index].ingredientId != null) {
+                      _toRemoveIngredients.add(_recipeIngredients[index]);
+                    }
+
                     setState(() {
                       _recipeIngredients.removeAt(index);
                     });
@@ -394,6 +402,10 @@ class _EditScreenState extends State<EditScreen> {
                   iconSize: 20,
                   tooltip: 'Delete',
                   onPressed: () {
+                    if (!_isCreate && _recipeSteps[index].stepId != null) {
+                      _toRemoveSteps.add(_recipeSteps[index]);
+                    }
+
                     setState(() {
                       _recipeSteps.removeAt(index);
                     });
