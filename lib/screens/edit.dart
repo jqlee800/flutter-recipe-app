@@ -261,7 +261,7 @@ class _EditScreenState extends State<EditScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        for (RecipeIngredient ingredient in _recipeIngredients)
+        for (int index = 0; index < _recipeIngredients.length; index++)
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(
@@ -273,7 +273,7 @@ class _EditScreenState extends State<EditScreen> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(right: 8),
-                  child: ingredient.image.isEmpty
+                  child: _recipeIngredients[index].image.isEmpty
                       ? Container(
                           padding: const EdgeInsets.all(4),
                           width: 40,
@@ -291,7 +291,7 @@ class _EditScreenState extends State<EditScreen> {
                       : ClipRRect(
                           borderRadius: BorderRadius.circular(5.0),
                           child: Image.network(
-                            ingredient.image,
+                            _recipeIngredients[index].image,
                             height: 40.0,
                             width: 40.0,
                             fit: BoxFit.cover,
@@ -302,7 +302,7 @@ class _EditScreenState extends State<EditScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(ingredient.name),
+                      Text(_recipeIngredients[index].name),
                     ],
                   ),
                 ),
@@ -313,7 +313,11 @@ class _EditScreenState extends State<EditScreen> {
                   ),
                   iconSize: 20,
                   tooltip: 'Delete',
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      _recipeIngredients.removeAt(index);
+                    });
+                  },
                 ),
               ],
             ),
@@ -356,7 +360,7 @@ class _EditScreenState extends State<EditScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        for (RecipeStep step in _recipeSteps)
+        for (int index = 0; index < _recipeSteps.length; index++)
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
             decoration: BoxDecoration(
@@ -370,10 +374,10 @@ class _EditScreenState extends State<EditScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(step.name),
-                      if (step.description != null)
+                      Text(_recipeSteps[index].name),
+                      if (_recipeSteps[index].description != null)
                         Text(
-                          step.description!,
+                          _recipeSteps[index].description!,
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.grey.shade700,
@@ -389,7 +393,11 @@ class _EditScreenState extends State<EditScreen> {
                   ),
                   iconSize: 20,
                   tooltip: 'Delete',
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      _recipeSteps.removeAt(index);
+                    });
+                  },
                 ),
               ],
             ),
