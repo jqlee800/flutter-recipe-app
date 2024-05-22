@@ -168,23 +168,22 @@ class _EditScreenState extends State<EditScreen> {
                 ),
 
                 // --------------------- INGREDIENTS ---------------------
-                Text(
-                  'Ingredients',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey.shade700,
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Text(
+                    'Ingredients',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey.shade700,
+                    ),
                   ),
                 ),
 
-                Wrap(
-                  children: [
-                    for (RecipeIngredient ingredient in _recipeIngredients) Text(ingredient.name),
-                  ],
-                ),
+                _buildIngredients(),
 
                 // --------------------- STEPS ---------------------
                 Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
+                  padding: const EdgeInsets.only(top: 20.0, bottom: 8.0),
                   child: Text(
                     'Instructions',
                     style: TextStyle(
@@ -194,7 +193,7 @@ class _EditScreenState extends State<EditScreen> {
                   ),
                 ),
 
-                Text(_recipeSteps.toString()),
+                _buildSteps(),
               ],
             ),
           ),
@@ -244,6 +243,100 @@ class _EditScreenState extends State<EditScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildIngredients() {
+    return Column(
+      children: [
+        for (RecipeIngredient ingredient in _recipeIngredients)
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color: Colors.grey.shade100,
+            ),
+            margin: const EdgeInsets.only(bottom: 8.0),
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(5.0),
+                    child: Image.network(
+                      ingredient.image,
+                      height: 40.0,
+                      width: 40.0,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(ingredient.name),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(
+                    Icons.delete_rounded,
+                    color: Colors.red.shade800,
+                  ),
+                  iconSize: 20,
+                  tooltip: 'Delete',
+                  onPressed: () {},
+                ),
+              ],
+            ),
+          )
+      ],
+    );
+  }
+
+  Widget _buildSteps() {
+    return Column(
+      children: [
+        for (RecipeStep step in _recipeSteps)
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color: Colors.grey.shade100,
+            ),
+            margin: const EdgeInsets.only(bottom: 8.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(step.name),
+                      if (step.description != null)
+                        Text(
+                          step.description!,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey.shade700,
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(
+                    Icons.delete_rounded,
+                    color: Colors.red.shade800,
+                  ),
+                  iconSize: 20,
+                  tooltip: 'Delete',
+                  onPressed: () {},
+                ),
+              ],
+            ),
+          )
+      ],
     );
   }
 
