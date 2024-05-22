@@ -248,6 +248,7 @@ class _EditScreenState extends State<EditScreen> {
 
   Widget _buildIngredients() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         for (RecipeIngredient ingredient in _recipeIngredients)
           Container(
@@ -304,13 +305,25 @@ class _EditScreenState extends State<EditScreen> {
                 ),
               ],
             ),
-          )
+          ),
+        TextButton.icon(
+          onPressed: null,
+          icon: const Icon(
+            Icons.add,
+            color: Constants.primaryColor,
+          ),
+          label: const Text(
+            'Add ingredient',
+            style: TextStyle(color: Constants.primaryColor),
+          ),
+        ),
       ],
     );
   }
 
   Widget _buildSteps() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         for (RecipeStep step in _recipeSteps)
           Container(
@@ -349,7 +362,18 @@ class _EditScreenState extends State<EditScreen> {
                 ),
               ],
             ),
-          )
+          ),
+        TextButton.icon(
+          onPressed: null,
+          icon: const Icon(
+            Icons.add,
+            color: Constants.primaryColor,
+          ),
+          label: const Text(
+            'Add instruction',
+            style: TextStyle(color: Constants.primaryColor),
+          ),
+        ),
       ],
     );
   }
