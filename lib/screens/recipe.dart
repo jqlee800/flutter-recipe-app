@@ -123,7 +123,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // ------------------------ RECIPE GENERAL INFO -------------------------
-                      _recipe!.image != null
+                      _recipe!.image != null && _recipe!.image?.trim() != ''
                           ? ClipRRect(
                               borderRadius: BorderRadius.circular(10.0),
                               child: Image.network(
@@ -134,8 +134,17 @@ class _RecipeScreenState extends State<RecipeScreen> {
                               ),
                             )
                           : Container(
-                              color: Colors.yellow,
-                              height: 20,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.indigo.shade100,
+                              ),
+                              height: 200,
+                              width: MediaQuery.of(context).size.width,
+                              child: const Icon(
+                                Icons.image,
+                                size: 50,
+                                color: Constants.primaryColor,
+                              ),
                             ),
                       Padding(
                         padding: const EdgeInsets.all(8),
@@ -143,11 +152,11 @@ class _RecipeScreenState extends State<RecipeScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              _recipe!.name,
-                              style: const TextStyle(
+                              _recipe!.name == '' ? 'No title specified' : _recipe!.name,
+                              style: TextStyle(
                                 fontSize: 24,
-                                color: Constants.primaryColor,
-                                fontWeight: FontWeight.bold,
+                                color: _recipe!.name == '' ? Colors.grey.shade400 : Constants.primaryColor,
+                                fontWeight: _recipe!.name == '' ? FontWeight.normal : FontWeight.bold,
                               ),
                             ),
                             if (_recipe!.description != null)

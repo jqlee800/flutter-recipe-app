@@ -152,7 +152,7 @@ class _HomeScreenState extends State<HomeScreen> {
         _fetchRecipes(_recipeTypes[_selectedType].code);
       },
       tileColor: Colors.grey.shade100,
-      leading: recipe.image != null
+      leading: recipe.image != null && recipe.image?.trim() != ''
           ? ClipRRect(
               borderRadius: BorderRadius.circular(5.0),
               child: Image.network(
@@ -187,7 +187,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ));
         },
       ),
-      title: Text(recipe.name),
+      title: Text(
+        recipe.name == '' ? 'Not title specified' : recipe.name,
+        style: recipe.name == '' ? TextStyle(color: Colors.grey.shade400) : null,
+      ),
       // Recipe type chip
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

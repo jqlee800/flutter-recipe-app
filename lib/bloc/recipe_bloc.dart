@@ -128,6 +128,21 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
 
   // Delete recipe by recipeId
   void _onRecipeDelete(RecipeDelete event, Emitter<RecipeState> emit) async {
+    // Delete all associated ingredients
+    await recipeDatabase.delete(
+      Constants.tableIngredient,
+      whereClause: '${Constants.colIngredientRecipeId}=?',
+      whereArgs: [event.recipeId],
+    );
+
+    // Delete all associated steps
+    await recipeDatabase.delete(
+      Constants.tableStep,
+      whereClause: '${Constants.colStepRecipeId}=?',
+      whereArgs: [event.recipeId],
+    );
+
+    // Delete the recipe itself
     await recipeDatabase.delete(
       Constants.tableRecipe,
       whereClause: '${Constants.colRecipeId}=?',

@@ -35,6 +35,8 @@ class _EditScreenState extends State<EditScreen> {
   final imageController = TextEditingController();
 
   List<RecipeType> _recipeTypes = [];
+  List<RecipeIngredient> _recipeIngredients = [];
+  List<RecipeStep> _recipeSteps = [];
   String _selectedRecipeType = codeEnumToString(RecipeTypeCode.APTZ);
 
   late bool _isCreate;
@@ -52,6 +54,8 @@ class _EditScreenState extends State<EditScreen> {
       descriptionController.text = widget.recipe!.description ?? '';
       imageController.text = widget.recipe!.image ?? '';
       _selectedRecipeType = codeEnumToString(widget.recipe!.code);
+      _recipeIngredients = widget.ingredients ?? [];
+      _recipeSteps = widget.steps ?? [];
     }
 
     super.initState();
@@ -79,6 +83,7 @@ class _EditScreenState extends State<EditScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.save_rounded),
+            disabledColor: Colors.grey.shade700,
             tooltip: _isCreate ? 'Add' : 'Save',
             onPressed: () {
               if (_isCreate) {
@@ -171,7 +176,11 @@ class _EditScreenState extends State<EditScreen> {
                   ),
                 ),
 
-                Text(widget.ingredients.toString()),
+                Wrap(
+                  children: [
+                    for (RecipeIngredient ingredient in _recipeIngredients) Text(ingredient.name),
+                  ],
+                ),
 
                 // --------------------- STEPS ---------------------
                 Padding(
@@ -185,7 +194,7 @@ class _EditScreenState extends State<EditScreen> {
                   ),
                 ),
 
-                Text(widget.steps.toString()),
+                Text(_recipeSteps.toString()),
               ],
             ),
           ),
