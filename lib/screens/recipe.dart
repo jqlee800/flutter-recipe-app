@@ -266,6 +266,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
                                   borderRadius: BorderRadius.circular(5),
                                   color: Colors.grey.shade100,
                                 ),
+                                width: MediaQuery.of(context).size.width,
                                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                                 margin: const EdgeInsets.only(bottom: 8.0),
                                 child: Column(

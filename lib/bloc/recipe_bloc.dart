@@ -111,15 +111,25 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
       body: event.recipe.toJson(),
     );
 
-    List<Map<String, dynamic>> ingredientsDB = event.ingredients.map((e) => e.toDB()).toList();
+    List<Map<String, dynamic>> ingredientsDB = event.ingredients.map((e) {
+      Map<String, dynamic> map = e.toDB();
+      map[Constants.colIngredientRecipeId] = newRecipeId;
+      return map;
+    }).toList();
 
+    // Insert ingredients
     await recipeDatabase.insertAll(
       Constants.tableIngredient,
       body: ingredientsDB,
     );
 
-    List<Map<String, dynamic>> stepsDB = event.steps.map((e) => e.toJson()).toList();
+    List<Map<String, dynamic>> stepsDB = event.steps.map((e) {
+      Map<String, dynamic> map = e.toJson();
+      map[Constants.colStepRecipeId] = newRecipeId;
+      return map;
+    }).toList();
 
+    // Insert steps
     await recipeDatabase.insertAll(
       Constants.tableStep,
       body: stepsDB,

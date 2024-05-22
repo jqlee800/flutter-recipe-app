@@ -91,7 +91,11 @@ class _EditScreenState extends State<EditScreen> {
             onPressed: () {
               if (_isCreate) {
                 context.read<RecipeBloc>().add(
-                      RecipeCreate(recipe: _getUpdatedRecipe()),
+                      RecipeCreate(
+                        recipe: _getUpdatedRecipe(),
+                        ingredients: _recipeIngredients,
+                        steps: _recipeSteps,
+                      ),
                     );
               } else {
                 context.read<RecipeBloc>().add(
